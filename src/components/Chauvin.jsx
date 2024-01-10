@@ -1,5 +1,5 @@
 import React from 'react'
-import ButtonsHero from './ButtonsHero'
+import LinksProjects from './LinksProjects'
 
 
 const Chauvin = () => {
@@ -18,7 +18,7 @@ const Chauvin = () => {
               <img src="https://imgfz.com/i/1ROrg2h.png" alt="javascript" border="0"
                           className='w-12 h-12  hover:scale-105  duration-500 p-1' />
           </div>
-          <ButtonsHero text='Visitar' link='https://chauvinarquitectura.com'/>
+          <LinksProjects text='Visitar' link='https://chauvinarquitectura.com' color='gray-100'/>
         </div>
         <div className="grid grid-cols-3 auto-rows-min self-center gap-2 rounded-xl overflow-hidden border border-transparent">
             <img src="https://i.ibb.co/vLHY2Y3/chauvin-main.jpg" alt="chauvin-main" border="0" className='col-span-3 '/>

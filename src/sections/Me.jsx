@@ -5,9 +5,9 @@ const Me = () => {
 return (
 <section className='w-full '>
 
-        <div className='me flex relative text-white w-full h-full bg-slate-200  dark:bg-gray-900'>
+        <div className='flex text-white w-full h-full bg-slate-200  dark:bg-gray-900'>
 
-                <div className='flex flex-wrap z-50 w-screen justify-center'>
+                <div className='flex flex-wrap w-screen justify-center'>
                         <div className=' self-center  w-96'>
                                 <p className='text-6xl p-0 font-bold text-black dark:text-white tracking-tigh '><span className='text-indigo-700'>D</span>avid <span className='text-indigo-700'>M</span>olina</p>
                                 <p className=' text-3xl text-black dark:text-white tracking-tight p-1'>Desarrollador web fullstack</p>

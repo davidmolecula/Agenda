@@ -1,5 +1,4 @@
 import React from 'react'
-import ButtonsHero from '../components/ButtonsHero'
 import Ceit from '../components/Ceit'
 import Chauvin from '../components/Chauvin'
 

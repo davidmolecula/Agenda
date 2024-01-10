@@ -1,19 +1,23 @@
 import React, { useEffect } from 'react'
-import ButtonsHero from './ButtonsHero'
+import LinksProjects from './LinksProjects'
 
 const Ceit = () => {
     const imgUrl=[
         {
         'url':"https://i.ibb.co/xJgs7pB/html.png",
-        'alt':'html'
+        'alt':'html',
+        'key':'1ceit'
         },
         {
         'url':'https://i.ibb.co/vYZw4CT/css-3.png',
-        'alt':'css3'
+        'alt':'css3',
+        'key':'2ceit'
         },
         {
         'url':'https://imgfz.com/i/1ROrg2h.png',
-        'alt':'js'}
+        'alt':'js',
+        'key':'3ceit'
+        }
     ] 
     return (
     <div className='pt-8 md:w-6/12  md:h-5/6  overflow-hidden dark:bg-gray-900 flex  items-center justify-center'>
@@ -22,10 +26,10 @@ const Ceit = () => {
                 <div className='md:text-3xl dark:text-white font-bold tracking-tight text-center sm:text-3xl'>Web del centro de estudiantes
                 </div>
                 <div className='flex'>
-                    {imgUrl.map(img=> <img src={img.url} alt={img.alt} border="0"
-                    className='w-12 h-12 hover:scale-125  duration-500 p-1' />)}
+                    {imgUrl.map(img=> <img src={img.url} key={img.key} alt={img.alt} border="0"
+                    className='w-12 h-12 hover:scale-125  duration-500 p-1 ' />)}
                 </div>
-                <ButtonsHero text='Visitar' link='https://ceitfra.com.ar'/>
+                <LinksProjects text='Visitar' link='https://ceitfra.com.ar' color='gray-100'/>
             </div>  
             <div className='grid grid-cols-3 auto-rows-min self-center gap-2 rounded-xl overflow-hidden '>
                 <img src="https://images.unsplash.com/photo-1704000599375-9224c9faaab9?q=80&w=1620&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

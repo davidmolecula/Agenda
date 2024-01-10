@@ -1,19 +1,19 @@
-import React, { forwardRef, useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import ButtonTheme from './ButtonTheme.jsx'
-import ButtonsHero from './ButtonsHero.jsx'
+import LinksHeader from './LinksHeader.jsx'
 
 
 
 const Header = () => {
     const [show,setShow]=useState(false)
-    const myRef=useRef()    
+    const navRef=useRef()    
     const handleMenu=()=>{
         if(!show){
-            myRef.current.classList.remove('hidden')
-            myRef.current.classList.add('h-screen')
+            navRef.current.classList.remove('-top-72')
+            navRef.current.classList.add('h-96')
         }else{
-            myRef.current.classList.add('hidden')
-            myRef.current.classList.remove('h-screen')
+            navRef.current.classList.add('-top-72')
+            navRef.current.classList.remove('h-96')
         }
         setShow(!show)
     }
@@ -21,8 +21,8 @@ const Header = () => {
     
   return (
     <header className="bg-slate-200 dark:bg-gray-900">
-    <div className="mx-auto flex sm:h-16 max-w-screen-xl md:items-center gap-8 px-4 sm:px-6 lg:px-8">
-        <a className="block text-indigo-600 dark:text-indigo-600" href="/">
+    <div className="mx-auto flex flex-wrap sm:h-16 max-w-screen-xl p-3  md:items-center gap-8 px-4 sm:px-6 lg:px-8">
+        <a className="block text-indigo-600 opacity-0 sm:opacity-100 dark:text-indigo-600" href="/">
         <span className="sr-only">Home</span>
         <svg className="h-8" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -32,9 +32,9 @@ const Header = () => {
         </svg>
         </a>
 
-        <div className="flex flex-1 md:items-center duration-500   justify-end md:justify-between">
-        <nav ref={myRef} aria-label="Global" className="hidden flex flex-col md:block">
-            <ul className="flex md:flex-row flex-col  items-center gap-6 text-sm">
+        <div className="flex flex-col-reverse sm:flex-row flex-1 w-screen  md:items-center duration-500   justify-end md:justify-between">
+        <nav ref={navRef} aria-label="Global" className=" absolute bg-slate-200 dark:bg-gray-900 sm:bg-transparent -top-72 sm:static sm:translate-y-0 w-full left-0 flex flex-col justify-center items-center md:block">
+            <ul className="flex md:flex-row flex-col items-center gap-6 text-sm">
             <li>
                 <a
                 className="text-blacktransition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
@@ -73,22 +73,16 @@ const Header = () => {
             </ul>
         </nav>
 
-        <div className="flex md:items-center gap-4">
+        <div className="flex w-full justify-end md:items-center gap-4">
             
             <div className="flex gap-4">
             <ButtonTheme/>
-            <ButtonsHero text='Iniciar sesión'/>
-
-            <a
-                className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-indigo-600 transition hover:text-indigo-500/75 dark:bg-gray-800 dark:text-white dark:hover:text-white/75 sm:block"
-                href="/"
-            >
-                Registrate
-            </a>
+            <LinksHeader text='Iniciar sesión' color='gray-100'/>
+            <LinksHeader text='Registrate' color='transparent'/>
             </div>
 
             <button
-            onClick={handleMenu} className="flex items-start duration-500   rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 dark:bg-gray-800 dark:text-white dark:hover:text-white/75 md:hidden"
+            onClick={handleMenu} className="flex h-10 items-start duration-500 z-50  rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 dark:bg-gray-800 dark:text-white dark:hover:text-white/75 md:hidden"
             >
             <span className="sr-only">Toggle menu</span>
             <svg
@@ -99,7 +93,7 @@ const Header = () => {
                 stroke="currentColor"
                 strokeWidth="2"
             >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" className='z-50'/>
             </svg>
             </button>
         </div>
