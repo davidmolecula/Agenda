@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState } from 'react'
+
 const ButtonsTheme = ()=> {
     const moonRef=useRef()
     const sunRef=useRef()
@@ -31,7 +32,7 @@ return (
         <img ref={sunRef}  src="https://i.ibb.co/yk738p8/brightness.png" alt="brightness" border="0" className='absolute bg-slate-200 rounded-xl hidden top-0 left-0  h-10 w-10 p-1' />
         </button>
     
-  )
+)
 }
 
 export default ButtonsTheme

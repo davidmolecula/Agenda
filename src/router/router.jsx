@@ -1,7 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "../sections/Home.jsx";
-import Login from '../sections/Login.jsx'
-import Landing from "../layout/Landing.jsx";
+import Login from '../pages/Login.jsx'
+import Landing from "../pages/Landing.jsx";
+import Register from "../pages/Register.jsx"
+import ProtectedRoute from "./protectedRoute.jsx";
 
 const router=createBrowserRouter([
     {
@@ -14,7 +16,19 @@ const router=createBrowserRouter([
             },
             {
                 path:'/login',
-                element:<Login/>
+                element: <ProtectedRoute path='/'>
+                    <Login/>
+                    </ProtectedRoute>
+            },
+            {
+                path:'/register',
+                element:<ProtectedRoute path='/'>
+                    <Register/>
+                </ProtectedRoute>
+            },
+            {
+                path:'/404',
+                element: <h1>Error 404</h1>
             }
         ]
     }

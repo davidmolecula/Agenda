@@ -1,12 +1,22 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ButtonTheme from './ButtonTheme.jsx'
 import LinksHeader from './LinksHeader.jsx'
+import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+
 
 
 
 const Header = () => {
     const [show,setShow]=useState(false)
-    const navRef=useRef()    
+    const photo='https://i.ibb.co/6t1cysr/dom.png'
+    const navRef=useRef()   
+    const user=useSelector(store=> store.userReducer.user)
+
+    useEffect(()=>{
+        const pepe=user
+    },[user])
+
     const handleMenu=()=>{
         if(!show){
             navRef.current.classList.remove('-top-72')
@@ -17,12 +27,12 @@ const Header = () => {
         }
         setShow(!show)
     }
-
     
   return (
+    
     <header className="bg-slate-200 dark:bg-gray-900">
     <div className="mx-auto flex flex-wrap sm:h-16 max-w-screen-xl p-3  md:items-center gap-8 px-4 sm:px-6 lg:px-8">
-        <a className="block text-indigo-600 opacity-0 sm:opacity-100 dark:text-indigo-600" href="/">
+        <Link className="block text-indigo-600 opacity-0 sm:opacity-100 dark:text-indigo-600" to="/">
         <span className="sr-only">Home</span>
         <svg className="h-8" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -30,45 +40,44 @@ const Header = () => {
             fill="currentColor"
             />
         </svg>
-        </a>
+        </Link>
 
         <div className="flex flex-col-reverse sm:flex-row flex-1 w-screen  md:items-center duration-500   justify-end md:justify-between">
         <nav ref={navRef} aria-label="Global" className=" absolute bg-slate-200 dark:bg-gray-900 sm:bg-transparent -top-72 sm:static sm:translate-y-0 w-full left-0 flex flex-col justify-center items-center md:block">
             <ul className="flex md:flex-row flex-col items-center gap-6 text-sm">
             <li>
-                <a
+                <Link
                 className="text-blacktransition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
                 href="/"
                 >
                 Acerca de mi
-                </a>
+                </Link>
             </li>
-
             <li>
-                <a
+                <Link
                 className="text-blacktransition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
                 href="/"
                 >
                 Servicios
-                </a>
+                </Link>
             </li>
 
             <li>
-                <a
+                <Link
                 className="text-blacktransition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
                 href="/"
                 >
                 Proyectos
-                </a>
+                </Link>
             </li>
 
             <li>
-                <a
+                <Link
                 className="text-blacktransition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
                 href="/"
                 >
                 Blog
-                </a>
+                </Link>
             </li>
             </ul>
         </nav>
@@ -77,8 +86,9 @@ const Header = () => {
             
             <div className="flex gap-4">
             <ButtonTheme/>
-            <LinksHeader text='Iniciar sesión' color='gray-100'/>
-            <LinksHeader text='Registrate' color='transparent'/>
+            {user? null:<LinksHeader text='Iniciar sesión' link='/login' color='gray-100'/>}
+            {user? null:<LinksHeader text='Registrate' link='/register' color='transparent'/>}
+            {user?<LinksHeader text='Cerrar sesión'  color='transparent'/>:null}
             </div>
 
             <button
