@@ -16,7 +16,6 @@ const LinksHeader = ({text,link,color}) => {
         if(text==='Cerrar sesión'){
         const user=localStorage.getItem('user')
         const data=JSON.parse(user)
-        console.log(data.email)
         setFormData({
             email: data.email,
             password:""

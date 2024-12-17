@@ -4,6 +4,8 @@ import Login from '../pages/Login.jsx'
 import Landing from "../pages/Landing.jsx";
 import Register from "../pages/Register.jsx"
 import ProtectedRoute from "./protectedRoute.jsx";
+import ProtectSesion from "./protectSesion.jsx";
+
 
 const router=createBrowserRouter([
     {
@@ -12,19 +14,26 @@ const router=createBrowserRouter([
         children:[
             {
                 path:'/',
-                element:<Home/>
+                element:
+                <ProtectedRoute path='/'>
+                    <Home/>
+                </ProtectedRoute>
+                
             },
+            
             {
                 path:'/login',
-                element: <ProtectedRoute path='/'>
+                element: 
+                <ProtectSesion path='/'>
                     <Login/>
-                    </ProtectedRoute>
+                </ProtectSesion>
             },
             {
                 path:'/register',
-                element:<ProtectedRoute path='/'>
-                    <Register/>
-                </ProtectedRoute>
+                element:
+                    <ProtectSesion path='/'>
+                        <Register/>
+                    </ProtectSesion>
             },
             {
                 path:'/404',

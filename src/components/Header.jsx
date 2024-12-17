@@ -5,17 +5,13 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 
-
-
 const Header = () => {
     const [show,setShow]=useState(false)
     const photo='https://i.ibb.co/6t1cysr/dom.png'
     const navRef=useRef()   
     const user=useSelector(store=> store.userReducer.user)
+    const date=useSelector(store=>store.dateReducer.date)
 
-    useEffect(()=>{
-        const pepe=user
-    },[user])
 
     const handleMenu=()=>{
         if(!show){
@@ -44,13 +40,13 @@ const Header = () => {
 
         <div className="flex flex-col-reverse sm:flex-row flex-1 w-screen  md:items-center duration-500   justify-end md:justify-between">
         <nav ref={navRef} aria-label="Global" className=" absolute bg-slate-200 dark:bg-gray-900 sm:bg-transparent -top-72 sm:static sm:translate-y-0 w-full left-0 flex flex-col justify-center items-center md:block">
-            <ul className="flex md:flex-row flex-col items-center gap-6 text-sm">
+            <ul className="flex sm:flex-row flex-col items-center gap-6 text-sm">
             <li>
                 <Link
                 className="text-blacktransition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
                 href="/"
                 >
-                Acerca de mi
+                Encriptador
                 </Link>
             </li>
             <li>
@@ -58,25 +54,7 @@ const Header = () => {
                 className="text-blacktransition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
                 href="/"
                 >
-                Servicios
-                </Link>
-            </li>
-
-            <li>
-                <Link
-                className="text-blacktransition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                href="/"
-                >
-                Proyectos
-                </Link>
-            </li>
-
-            <li>
-                <Link
-                className="text-blacktransition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                href="/"
-                >
-                Blog
+                Seguimiento de estudios
                 </Link>
             </li>
             </ul>
@@ -88,11 +66,11 @@ const Header = () => {
             <ButtonTheme/>
             {user? null:<LinksHeader text='Iniciar sesión' link='/login' color='gray-100'/>}
             {user? null:<LinksHeader text='Registrate' link='/register' color='transparent'/>}
-            {user?<LinksHeader text='Cerrar sesión'  color='transparent'/>:null}
+            {user? <LinksHeader text='Cerrar sesión'  color='transparent'/>:null}
             </div>
 
             <button
-            onClick={handleMenu} className="flex h-10 items-start duration-500 z-50  rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 dark:bg-gray-800 dark:text-white dark:hover:text-white/75 md:hidden"
+            onClick={handleMenu} className="flex h-10 items-start duration-500 z-50  rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 dark:bg-gray-800 dark:text-white dark:hover:text-white/75 sm:hidden"
             >
             <span className="sr-only">Toggle menu</span>
             <svg

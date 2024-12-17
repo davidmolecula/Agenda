@@ -1,9 +1,12 @@
 import { createReducer } from "@reduxjs/toolkit";
-import {user_login, user_logout, user_photo, user_signup, user_token} from '../actions/userActions.js'
+import {user_encrypted, user_login, user_logout, user_photo, user_signup, user_token} from '../actions/userActions.js'
 
 const initialState={
-    user:null,
-    token:null
+        platform:"",
+        account:"",
+        email:"",
+        password:"",
+        iv:""
 }
 const userReducer=createReducer(initialState,
     (builder)=> builder
@@ -36,6 +39,16 @@ const userReducer=createReducer(initialState,
         return{
             ...state,
             email:action.payload.email
+        }
+    })
+    .addCase(user_encrypted.fulfilled,(state,action)=>{
+        return{
+            platform:action.payload.platform,
+            account:action.payload.account,
+            email:action.payload.email,
+            password:action.payload.password,
+            iv:action.payload.iv,
+            success:action.payload.success
         }
     })
 )

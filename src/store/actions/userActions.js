@@ -1,5 +1,10 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { useState } from "react";
 import axios from 'axios'
+import encriptar from "../../crypto/cypher";
+
+
+
 
 export const user_photo=createAction('user_photo',(obj)=>{
     return{
@@ -16,6 +21,7 @@ export const user_login=createAsyncThunk('user_login',async(obj)=>{
                 user: data.response.user,
                 token: data.response.token
             }
+            
         }catch(error){
         console.log(error)
         return {
@@ -27,7 +33,6 @@ export const user_login=createAsyncThunk('user_login',async(obj)=>{
 export const user_signup=createAsyncThunk('user_signup',async(obj)=>{
     try{
             const {data}= await axios.post('http://localhost:8000/api/auth/signup', obj.data)
-            console.log(data)
             localStorage.setItem('token',data.response.token)
             localStorage.setItem('user', JSON.stringify(data.response.user))
             return {
@@ -65,5 +70,28 @@ export const user_token=createAction('user_token',(user)=>{
             user
         }
     }
+})
+
+export const user_encrypted=createAsyncThunk('user_encrypted',async(formData)=>{
+    try{
+        const datosEncriptados=encriptar(formData.data.account,formData.data.password)
+        const formDataEncriptado=formData.data
+        formDataEncriptado.account=datosEncriptados.encryptedAcc
+        formDataEncriptado.password=datosEncriptados.encryptedPass
+        formDataEncriptado.iv=datosEncriptados.iv
+        const response= await axios.post('http://localhost:8000/api/users/encrypted', formDataEncriptado)
+        //localStorage.setItem('account',data.response.user.account)
+        //localStorage.setItem('password', JSON.stringify(data.response.user.password))
+        return{
+                platform:formDataEncriptado.platform,
+                account:response.data.account,
+                email:formDataEncriptado.email,
+                password:response.data.password,
+                iv:formDataEncriptado.iv,
+                success:response.data.success
+        }
+    }catch(error){
+        console.log(error)
+}
 })
 
