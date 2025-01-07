@@ -5,11 +5,11 @@ import Footer from '../components/Footer'
 import { Button } from '@/components/ui/button'
 import {CalendarDemo} from '../components/Calendario.jsx'
 
+
 const Landing = () => {
   return (
     <div>
         <Header/>
-        <CalendarDemo></CalendarDemo>
         <Outlet/>
         <Footer/>
     </div>

@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 
 
 const Login = () => {
-  const user=useSelector(store=>store.userReducer.user)
   const dispatch=useDispatch()
   const [formData,setFormData]=useState({
     email:'',

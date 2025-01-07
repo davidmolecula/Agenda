@@ -32,8 +32,7 @@ export const user_login=createAsyncThunk('user_login',async(obj)=>{
 
 export const user_signup=createAsyncThunk('user_signup',async(obj)=>{
     try{
-            const {data}= await axios.post('http://localhost:8000/api/auth/signup', obj.data)
-            localStorage.setItem('token',data.response.token)
+            const {data}= await axios.post('http://localhost:8000/api/auth/agenda', obj.data)
             localStorage.setItem('user', JSON.stringify(data.response.user))
             return {
                 email:data.response.user.email

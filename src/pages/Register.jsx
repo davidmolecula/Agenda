@@ -2,10 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { user_signup } from '../store/actions/userActions'
 
-
-
 const Register = () => {
-
   const dispatch=useDispatch()
   const [formData,setFormData]=useState({
     name:"",
@@ -19,7 +16,6 @@ const Register = () => {
       [event.target.name]:event.target.value
     })
   }
-
   const handleSignup=async(event)=>{
     event.preventDefault()
     try{
@@ -31,10 +27,6 @@ const Register = () => {
     }
   }
 
-
-
-  
-  
   return (
 <section className="bg-white dark:bg-gray-900">
   <div className="lg:grid lg:min-h-screen lg:grid-cols-12">

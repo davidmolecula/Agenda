@@ -7,10 +7,9 @@ import { useSelector } from 'react-redux'
 
 const Header = () => {
     const [show,setShow]=useState(false)
-    const photo='https://i.ibb.co/6t1cysr/dom.png'
     const navRef=useRef()   
     const user=useSelector(store=> store.userReducer.user)
-    const date=useSelector(store=>store.dateReducer.date)
+
 
 
     const handleMenu=()=>{
