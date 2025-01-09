@@ -29,14 +29,13 @@ export function CalendarDemo() {
   const [status, setStatus] = useState("idle"); // Posibles valores: "idle", "saving", "success", "error"
   const [isOpen, setIsOpen] = useState(false); // Controla si el diálogo está abierto o cerrado
   const dispatch=useDispatch()  
+
   const handleSelect=(newDate)=>{
     setDate(newDate)
     dispatch(date_picked({
       date:date.toString()
     }))
   }
-  const agenda=useSelector(store=>store.dateReducer.agenda)
-
     useEffect(()=>{
       handleSelect(date)
     },[])
@@ -44,6 +43,8 @@ export function CalendarDemo() {
       // Despacha la acción para obtener la agenda desde la API al cargar el componente
       dispatch(date_getagenda());
     }, [dispatch]);
+    const agenda=useSelector(store=>store.dateReducer.agenda)
+    console.log(agenda)
   return (
     <>
     <div className="flex w-full  space-x-12">
@@ -51,15 +52,15 @@ export function CalendarDemo() {
       captionLayout="dropdown-buttons"
       fromYear={2020}
       toYear={2026}
-      fixedWeeks showWeekNumber
+      fixedWeeks
       mode="single"
       selected={date}
       onSelect={handleSelect}
       className="rounded-md border"
     />
-    <DataTable data={agenda} columns={columns} />
+
     <div className="flex items-center flex-col w-96 gap-10  rounded-xl">
-      {date? <div className="p-2"><span className="capitalize bg-green-400 rounded-xl p-2">{format(date, 'eeee', {locale: es})}</span>, {format(date, 'PPP', {locale: es})}</div>:<div>No hay fechas seleccionadas</div>}
+      {date? <div className="p-2"><span className="capitalize  rounded-xl">{format(date,'eeee',{locale: es})}</span>, {format(date, 'PPP', {locale: es})}</div>:<div>No hay fechas seleccionadas</div>}
       <div className="flex w-full h-full justify-center gap-10">
       <div className="flex flex-col gap-3 w-56 justify-center border border-gray-400 rounded-xl">
         <p className="text-center text-xl">Agenda</p>
@@ -101,7 +102,8 @@ export function CalendarDemo() {
                             name: "",
                             description: "",
                             importance: "",
-                            }}>
+                            }} date={date}>
+                    
         </DialogDemo>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -173,6 +175,7 @@ export function CalendarDemo() {
       </div>
       </div>   
       </div>
+      <DataTable data={agenda} date={date} columns={columns} />
     </div>
     </>
   )

@@ -13,23 +13,28 @@ import { Label } from "@/components/ui/label";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { date_agenda, resetSuccess} from "@/store/actions/dateActions";
+import { Checkbox } from "@/components/ui/checkbox"
 
-export function DialogDemo({ initialOpen = false,  title, description, fields }) {
+export function DialogDemo({ initialOpen = false,  title, description, fields, date }) {
   const [status, setStatus] = useState("idle"); // Posibles valores: "idle", "saving", "success", "error"
   const [isOpen, setIsOpen] = useState(false); // Controla si el diálogo está abierto o cerrado
   const [formData,setFormData]=useState({
     name:"",
     description:"",
-    importance:""
+    importance:"",
+    date:{},
+    checked:""
   })
   const dispatch=useDispatch()
   const { success, lastAction } = useSelector((store) => store.dateReducer);
   const agendaSuccess = success && lastAction === "date_agenda";
 
   const handleInput=(event)=>{
+    const { name, value } = event.target; 
     setFormData({
       ...formData,
-      [event.target.name]:event.target.value
+      [name]:value,
+      date:date
     })
   }
 
@@ -62,6 +67,13 @@ export function DialogDemo({ initialOpen = false,  title, description, fields })
       // Mostrar error si hay campos vacíos
     }
   };
+
+  const handleChecked = (isChecked, checkboxValue) => {
+    setFormData((prevState) => ({  
+      ...prevState,
+      importance: isChecked ? checkboxValue : "", // Si está marcado, asignar el valor; si no, limpiar
+    }));
+  };
   
   useEffect(() => {
     if (!isOpen) {
@@ -69,6 +81,7 @@ export function DialogDemo({ initialOpen = false,  title, description, fields })
         name: "",
         description: "",
         importance: "",
+        date:{}
       });
       setTimeout(() => setStatus("idle"), 2000);
       
@@ -96,13 +109,31 @@ export function DialogDemo({ initialOpen = false,  title, description, fields })
               <Label htmlFor={key} className="text-right">
                 {key.charAt(0).toUpperCase()+key.slice(1).toLowerCase()}
               </Label>
-              <Input
-                id={key}
-                name={key}
-                defaultValue={value}
-                onChange={handleInput}
-                className="col-span-3"
-              />
+              {key === "importance" ? (
+  <div className="flex items-center gap-2">
+    <Checkbox
+      onCheckedChange={(isChecked) => handleChecked(isChecked, "Urgente")}
+      className="flex items-center rounded-2xl justify-center w-20 h-10 border bg-red-400 data-[state=checked]:bg-red-700"
+    >
+      <span className="text-sm font-medium">Urgente</span>
+    </Checkbox>
+    <Checkbox
+      onCheckedChange={(isChecked) => handleChecked(isChecked, "Resuelto")}
+      className="flex items-center rounded-2xl justify-center w-20 h-10 border bg-green-400 data-[state=checked]:bg-green-700"
+    >
+      <span className="text-sm font-medium">Resuelto</span>
+    </Checkbox>
+  </div>
+) : (
+  <Input
+    id={key}
+    name={key}
+    defaultValue={value}
+    onChange={handleInput}
+    className="col-span-3"
+  />
+)}
+              
             </div>
           ))}
         </div>

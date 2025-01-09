@@ -12,7 +12,6 @@ export const date_agenda=createAsyncThunk('date_agenda',async(obj)=>{
     try{
         const {data}= await axios.post('http://localhost:8000/api/auth/agenda', obj.data)
             localStorage.setItem('agenda', JSON.stringify(data.response.agenda))
-            console.log(data.response.agenda)
     return {
         success:data.success,
         agenda:data.response.agenda
@@ -27,7 +26,6 @@ export const date_agenda=createAsyncThunk('date_agenda',async(obj)=>{
 export const date_getagenda = createAsyncThunk('date_getagenda', async () => {
     try {
         const { data } = await axios.get('http://localhost:8000/api/agenda');
-        console.log(data.agenda)
         return {
             success: data.success,
             agenda: data.agenda,

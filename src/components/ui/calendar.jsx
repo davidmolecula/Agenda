@@ -2,13 +2,11 @@
 import * as React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { DayPicker, useDayPicker, useNavigation } from "react-day-picker"
-import {es} from 'date-fns/locale/es'
-import { cn } from "@/lib/utils"
+import { es } from "date-fns/locale/es";
+import { cn } from "/src/lib/utils"
 import { buttonVariants } from "/src/components/ui/button.jsx"
+import { Select, SelectContent, SelectItem, SelectTrigger } from "@radix-ui/react-select";
 import { format, setMonth } from "date-fns";
-import {Select, SelectContent, SelectItem, SelectTrigger } from "@radix-ui/react-select";
-
-
 
 function Calendar({
   className,
@@ -18,17 +16,15 @@ function Calendar({
 }) {
   return (
     (<DayPicker
-      
       showOutsideDays={showOutsideDays}
-      locale={es}
       className={cn("p-3", className)}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
         caption: "flex justify-center pt-1 relative items-center",
-        caption_label:"hidden",
-        dropdown_month:'bg-black',
-        caption_dropdowns:"flex overflow-auto  [&>*:first]:hidden relative z-50 justify-center pt-0 [&>div]:absolute [&>div]:z-100 [&>div]:mt-10 [&>div]:pl-3 [&>div]:pr-3 [&>div]:opacity-100 [&>div]:bg-black   gap-1 [&>button]:relative  [&>button]:border [&>button]:m-1 [&>button:nth-child(3):hover]:bg-white [&>button:nth-child(3):hover]:text-black [&>button:nth-child(2):hover]:bg-white [&>button:nth-child(2):hover]:text-black [&>button]:px-3  [&>*]:rounded  ",
+        caption_label: "text-sm font-medium",
+        dropdown_buttons:"bg-black",
+        caption_dropdowns:"flex overflow-hidden  [&>*:first]:hidden relative z-50 justify-center pt-0 [&>div]:absolute [&>div]:z-100 [&>div]:mt-10 [&>div]:pl-3 [&>div]:pr-3 [&>div]:opacity-100 [&>div]:bg-black   gap-1 [&>button]:relative  [&>button]:border [&>button]:m-1 [&>button:nth-child(3):hover]:bg-white [&>button:nth-child(3):hover]:text-black [&>button:nth-child(2):hover]:bg-white [&>button:nth-child(2):hover]:text-black [&>button]:px-3  [&>*]:rounded  ",
         nav: "space-x-1 flex items-center",
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
@@ -51,7 +47,7 @@ function Calendar({
           "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
         day_today: "bg-accent text-accent-foreground",
         day_outside:
-          "day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
+          "day-outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground",
         day_disabled: "text-muted-foreground opacity-50",
         day_range_middle:
           "aria-selected:bg-accent aria-selected:text-accent-foreground",
