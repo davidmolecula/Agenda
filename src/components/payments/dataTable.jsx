@@ -57,7 +57,7 @@ function DataTable({ data, date, columns }) {
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th className="w-48" key={header.id}>
+                <th  key={header.id}>
                   {header.isPlaceholder ? null : (
                     <div
                       onClick={header.column.getToggleSortingHandler()}

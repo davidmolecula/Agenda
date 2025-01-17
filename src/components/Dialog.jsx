@@ -18,13 +18,30 @@ import { Checkbox } from "@/components/ui/checkbox"
 export function DialogDemo({ initialOpen = false,  title, description, fields, date }) {
   const [status, setStatus] = useState("idle"); // Posibles valores: "idle", "saving", "success", "error"
   const [isOpen, setIsOpen] = useState(false); // Controla si el diálogo está abierto o cerrado
+  const [colorSelected,setColorSelected]=useState("")
   const [formData,setFormData]=useState({
     name:"",
     description:"",
     importance:"",
     date:{},
-    checked:""
+    color:"bg-indigo-500",
   })
+  const colors = [
+  'bg-red-500',      // Alerta
+  'bg-yellow-400',   // Fecha importante
+  'bg-indigo-500',   // Base principal
+  'bg-purple-400',   // Evento especial
+  'bg-blue-400',     // Evento neutro
+  'bg-green-400',    // Evento positivo
+];
+  const colorMapping = {
+    'bg-red-500': 'bg-red-700',      // Alerta
+    'bg-yellow-400': 'bg-yellow-600',// Fecha importante
+    'bg-indigo-500': 'bg-indigo-700',// Base principal
+    'bg-purple-400': 'bg-purple-600',// Evento especial
+    'bg-blue-400': 'bg-blue-600',    // Evento neutro
+    'bg-green-400': 'bg-green-600',  // Evento positivo
+  };
   const dispatch=useDispatch()
   const { success, lastAction } = useSelector((store) => store.dateReducer);
   const agendaSuccess = success && lastAction === "date_agenda";
@@ -34,8 +51,10 @@ export function DialogDemo({ initialOpen = false,  title, description, fields, d
     setFormData({
       ...formData,
       [name]:value,
-      date:date
+      date:date,
+      color:colorSelected
     })
+    console.log(formData)
   }
 
   useEffect(() => {
@@ -68,13 +87,21 @@ export function DialogDemo({ initialOpen = false,  title, description, fields, d
     }
   };
 
-  const handleChecked = (isChecked, checkboxValue) => {
-    setFormData((prevState) => ({  
-      ...prevState,
-      importance: isChecked ? checkboxValue : "", // Si está marcado, asignar el valor; si no, limpiar
-    }));
+  const handleChecked = (event) => {
+    const selectedColor = event.target.getAttribute("data-name");
+    console.log("selectedColor:", selectedColor);
+    setColorSelected((prevColor) => 
+      prevColor === selectedColor ? "" : selectedColor
+    );
+
+    setFormData({
+      ...formData,
+      color:selectedColor
+    });
+    console.log(formData)
+
   };
-  
+
   useEffect(() => {
     if (!isOpen) {
       setFormData({
@@ -104,42 +131,54 @@ export function DialogDemo({ initialOpen = false,  title, description, fields, d
         </DialogHeader>
         <div className="grid gap-4 py-4">
           {/* Mapear las propiedades del objeto fields */}
-          {Object.entries(fields).map(([key, value]) => (
-            <div key={key} className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor={key} className="text-right">
-                {key.charAt(0).toUpperCase()+key.slice(1).toLowerCase()}
+          {Object.entries(fields).map(([key,value]) => (
+            <div  key={key} className={key==='importance'?`flex grid-cols-4 items-center gap-4` :`grid  grid-cols-4 items-center gap-4`}>
+              <Label htmlFor={key} className="flex self-start justify-center pt-3">
+                {value}
               </Label>
-              {key === "importance" ? (
-  <div className="flex items-center gap-2">
-    <Checkbox
-      onCheckedChange={(isChecked) => handleChecked(isChecked, "Urgente")}
-      className="flex items-center rounded-2xl justify-center w-20 h-10 border bg-red-400 data-[state=checked]:bg-red-700"
-    >
-      <span className="text-sm font-medium">Urgente</span>
-    </Checkbox>
-    <Checkbox
-      onCheckedChange={(isChecked) => handleChecked(isChecked, "Resuelto")}
-      className="flex items-center rounded-2xl justify-center w-20 h-10 border bg-green-400 data-[state=checked]:bg-green-700"
-    >
-      <span className="text-sm font-medium">Resuelto</span>
-    </Checkbox>
-  </div>
-) : (
-  <Input
-    id={key}
-    name={key}
-    defaultValue={value}
-    onChange={handleInput}
-    className="col-span-3"
-  />
-)}
-              
+                {key.toLowerCase() === "importance" ? (
+                  
+                  <div className="flex flex-col  h-32  gap-10">
+                        <Input
+                        id={key}
+                        name={key}
+                        onChange={handleInput}
+                        className={`ml-2 w-24  align-center  items-center rounded-lg justify-center h-10 border ${colorSelected}`}
+                      />
+                        <div className="flex  items-center gap-2">
+                        {colors.map((color) => (
+                              <Checkbox
+                                key={color}
+                                data-name={color}
+                                onClick={handleChecked}
+                                checked={colorSelected === color}
+                                className={`flex items-center rounded-lg justify-center w-8 h-8  ${
+                                  colorSelected === color ? colorMapping[color] : color
+                                }` }
+                              >
+                                <span className="text-sm font-medium"></span>
+                              </Checkbox>
+                              
+                            ))
+                          } 
+                          </div>  
+                    </div>
+                  
+                ) : (
+                  <Input
+                    id={key}
+                    name={key}
+                    onChange={handleInput}
+                    className="col-span-3 "
+                  />
+              )    
+              } 
             </div>
           ))}
         </div>
         <DialogFooter>
           <Button type="submit" onClick={handleSaveAgenda} disabled={status === "saving"}>
-            {status === "saving" ? "Saving..." : "Save changes"}
+            {status === "saving" ? "Guardando..." : "Guardar cambios"}
           </Button>
         </DialogFooter>
 

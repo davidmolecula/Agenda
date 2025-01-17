@@ -1,4 +1,3 @@
-
 import { MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ArrowUpDown } from "lucide-react"
@@ -20,7 +19,7 @@ export const columns = [
       return (
         <Button
           variant="ghost"
-          className="w-56 border text-right font-medium"
+          className="w-56 h-10 border text-right font-medium"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Nombre
@@ -30,31 +29,31 @@ export const columns = [
     },
     cell: ({ row }) => {
       const name = row.getValue("name")
-      return <div className="w-56 border text-right font-medium">{name}</div>;
+      return <div className="w-56 h-8 flex items-center justify-center border font-medium">{name}</div>;
     },
   },
   {
     accessorKey: "description",
-    header: () => <div className="w-48 border  text-right">Descripcion</div>,
+    header: () => <div className="w-48 h-10 border flex items-center justify-center">Descripcion</div>,
     cell: ({ row }) => {
       const description = row.getValue("description")
-      return <div className="w-48 border text-right font-medium">{description}</div>;
+      return <div className="w-48 border h-8 flex items-center justify-center font-medium">{description}</div>;
   },
   },
   {
     accessorKey: "importance",
-    header: () => <div className="w-36 border text-right">Importancia</div>,
+    header: () => <div className="w-36 !m-0 !p-0 h-10 border flex items-center justify-center">Importancia</div>,
     cell: ({ row }) => {
       const importance = row.getValue("importance")
-      return <div className="w-36 border text-right font-medium">{importance}</div>;
+      return <div className="w-36 h-8 flex items-center justify-center border  font-medium">{importance}</div>;
   },
   },
   {
     accessorKey: "date",
-    header: () => <div className="w-78 border text-right">Date</div>,
+    header: () => <div className="w-24 h-10 !m-0 !p-0 border flex items-center justify-center">Fecha</div>,
     cell: ({ row }) => {
       const date = row.getValue("date")
-      return <div className="w-78 border text-right font-medium">{format(date,'eeee',{locale: es})}, {format(date, 'PPP', {locale: es})}</div>;
+      return <div className="w-24 h-8 border flex items-center justify-center font-medium">{format(date,'PP',{locale: es})}</div>;
   },
   },
   {

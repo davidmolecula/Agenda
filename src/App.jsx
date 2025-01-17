@@ -16,7 +16,7 @@ function App() {
       let headers={headers:{'Authorization':`Bearer ${token}`}}
       axios.post(url,null,headers)
       .then(response=>dispatch(user_token(response.data.user)))
-      .catch(error=>console.log(error))
+      .catch(error=>error)
     }
   },[])
   return (

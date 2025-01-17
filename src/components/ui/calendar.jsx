@@ -44,8 +44,8 @@ function Calendar({
         ),
         day_range_end: "day-range-end",
         day_selected:
-          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-        day_today: "bg-accent text-accent-foreground",
+          "!bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground !text-black focus:bg-pink-500 focus:!text-black",
+        day_today: "bg-accent !text-black focus:!text-black",
         day_outside:
           "day-outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground",
         day_disabled: "text-muted-foreground opacity-50",
@@ -74,12 +74,12 @@ function Calendar({
             value={props.value?.toString()}>
             <SelectTrigger>{format(currentMonth,"MMMMMM",{locale: es})}</SelectTrigger>
             <SelectContent>
-              {selectItems.map((selectItem)=>(
-                <SelectItem value={selectItem.value}>
+              {selectItems.map((selectItem) => (
+                <SelectItem key={selectItem.value} value={selectItem.value}>
                   {selectItem.label}
                 </SelectItem>
               ))}
-            </SelectContent>
+          </SelectContent>
           </Select>
           )
         }else if(props.name==="years"){
@@ -102,7 +102,7 @@ function Calendar({
               <SelectTrigger>{currentMonth.getFullYear()} ↓</SelectTrigger>
               <SelectContent>
                 {selectItems.map((selectItem)=>(
-                  <SelectItem value={selectItem.value}>
+                  <SelectItem key={selectItem.value} value={selectItem.value}>
                     {selectItem.label}
                   </SelectItem>
                 ))}
