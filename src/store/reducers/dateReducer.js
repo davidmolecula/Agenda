@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { date_picked, date_agenda, resetSuccess, date_getagenda, date_delete, date_delete_filtered, date_agenda_feriado } from "../actions/dateActions";
+import { date_picked, date_agenda, resetSuccess, date_getagenda, date_delete, date_delete_filtered} from "../actions/dateActions";
 
 const initialState = {
     date: "",
@@ -57,12 +57,6 @@ const dateReducer = createReducer(initialState, (builder) =>
             return {
                 ...state,
                 filtrado: action.payload.filtrado
-            }
-        })
-        .addCase(date_agenda_feriado.fulfilled, (state,action)=>{
-            return {
-                ...state,
-                success:action.payload.success
             }
         })
 )

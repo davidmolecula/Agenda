@@ -6,10 +6,6 @@ import Register from "../pages/Register.jsx"
 import ProtectedRoute from "./protectedRoute.jsx";
 import ProtectSesion from "./protectSesion.jsx";
 import { CalendarDemo } from "@/components/Calendario.jsx";
-import {DialogDemo} from "@/components/Dialog.jsx";
-import { columns } from '@/components/payments/columns.jsx';
-
-
 
 const router=createBrowserRouter([
     {
@@ -45,12 +41,11 @@ const router=createBrowserRouter([
             },
             {
                 path:'/calendario',
-                element:<CalendarDemo></CalendarDemo>  
+                element:
+                <ProtectedRoute path='/calendario'>
+                    <CalendarDemo></CalendarDemo> 
+                </ProtectedRoute> 
             },
-            {
-                path:'/dialog',
-                element:<DialogDemo></DialogDemo>
-            }
         ]
     }
 ])

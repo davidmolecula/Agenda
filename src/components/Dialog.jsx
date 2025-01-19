@@ -16,6 +16,10 @@ import { date_agenda, resetSuccess} from "@/store/actions/dateActions";
 import { Checkbox } from "@/components/ui/checkbox"
 
 export function DialogDemo({ initialOpen = false,  title, description, fields, date }) {
+  const user=useSelector(store=> store.userReducer.user)
+  const agenda=useSelector(store=>store.dateReducer.agenda)
+  console.log(user)
+  console.log(agenda)
   const [status, setStatus] = useState("idle"); // Posibles valores: "idle", "saving", "success", "error"
   const [isOpen, setIsOpen] = useState(false); // Controla si el diálogo está abierto o cerrado
   const [colorSelected,setColorSelected]=useState("")
@@ -25,7 +29,17 @@ export function DialogDemo({ initialOpen = false,  title, description, fields, d
     importance:"",
     date:{},
     color:"bg-indigo-500",
+    user:user.id,
   })
+  useEffect(() => {
+    if (user?.id) {
+      setFormData((prevData) => ({
+        ...prevData,
+        user: user.id, // Actualiza el campo user
+      }));
+    }
+  }, [user]);
+  console.log(formData)
   const colors = [
   'bg-red-500',      // Alerta
   'bg-yellow-400',   // Fecha importante
@@ -52,9 +66,8 @@ export function DialogDemo({ initialOpen = false,  title, description, fields, d
       ...formData,
       [name]:value,
       date:date,
-      color:colorSelected
+      color:colorSelected,
     })
-    console.log(formData)
   }
 
   useEffect(() => {
@@ -89,7 +102,6 @@ export function DialogDemo({ initialOpen = false,  title, description, fields, d
 
   const handleChecked = (event) => {
     const selectedColor = event.target.getAttribute("data-name");
-    console.log("selectedColor:", selectedColor);
     setColorSelected((prevColor) => 
       prevColor === selectedColor ? "" : selectedColor
     );
@@ -98,8 +110,6 @@ export function DialogDemo({ initialOpen = false,  title, description, fields, d
       ...formData,
       color:selectedColor
     });
-    console.log(formData)
-
   };
 
   useEffect(() => {

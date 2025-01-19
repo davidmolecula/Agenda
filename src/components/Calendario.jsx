@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar"
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { date_picked, date_getagenda, date_delete, date_delete_filtered, date_agenda_feriado} from "@/store/actions/dateActions";
+import { date_picked, date_getagenda, date_delete, date_delete_filtered} from "@/store/actions/dateActions";
 import { es } from "date-fns/locale/es";
 import { format } from "date-fns";
 import {DialogDemo} from "@/components/Dialog.jsx";
@@ -26,13 +26,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export function CalendarDemo() {
+
+  const agenda=useSelector(store=>store.dateReducer.agenda)
   const [date, setDate] = useState(new Date());
-  const [status, setStatus] = useState("idle"); // Posibles valores: "idle", "saving", "success", "error"
   const [isOpen, setIsOpen] = useState(false); // Controla si el diálogo está abierto o cerrado
   const [showCalendar, setShowCalendar] = useState(false);
   const [filtrado,setFiltrado]=useState("")
   const [nameDelete,setNameDelete]= useState("")
-  const hidden="hidden"
   const dispatch=useDispatch()  
   const colors = [
     'bg-red-500',      // Alerta
@@ -50,28 +50,6 @@ const colores = {
   'bg-blue-400': '#60a5fa',     // Evento neutro
   'bg-green-400': '#4ade80',    // Evento positivo
 };
-
-useEffect(() => {
-  const feriados2025 = [
-    { date: new Date('2025-01-01'), name: 'Año Nuevo' },
-    { date: new Date('2025-03-03'), name: 'Carnaval' },
-    { date: new Date('2025-03-04'), name: 'Carnaval' },
-    { date: new Date('2025-03-24'), name: 'Día Nacional de la Memoria por la Verdad y la Justicia' },
-    { date: new Date('2025-04-02'), name: 'Día del Veterano y de los Caídos en la Guerra de Malvinas' },
-    { date: new Date('2025-04-18'), name: 'Viernes Santo' },
-    { date: new Date('2025-05-01'), name: 'Día del Trabajador' },
-    { date: new Date('2025-05-25'), name: 'Día de la Revolución de Mayo' },
-    { date: new Date('2025-06-16'), name: 'Paso a la Inmortalidad del General Martín Miguel de Güemes' },
-    { date: new Date('2025-06-20'), name: 'Paso a la Inmortalidad del General Manuel Belgrano' },
-    { date: new Date('2025-07-09'), name: 'Día de la Independencia' },
-    { date: new Date('2025-08-18'), name: 'Paso a la Inmortalidad del General José de San Martín' },
-    { date: new Date('2025-10-13'), name: 'Día del Respeto a la Diversidad Cultural' },
-    { date: new Date('2025-11-12'), name: 'Día de la Soberanía Nacional' },
-    { date: new Date('2025-12-08'), name: 'Día de la Inmaculada Concepción de María' },
-    { date: new Date('2025-12-25'), name: 'Navidad' },
-  ];
-  dispatch(date_agenda_feriado(feriados2025));
-}, [dispatch]);
 
   const toggleCalendar = () => {
     setShowCalendar(!showCalendar)
@@ -97,9 +75,6 @@ useEffect(() => {
       dispatch(date_getagenda());
     }, [dispatch]);
 
-    const agenda=useSelector(store=>store.dateReducer.agenda)
-
-
     const colorArrays = colors.reduce((acc, colorClass) => {
       acc[colorClass] = agenda.filter((item) => item.color === colorClass).map((item) => new Date(item.date));
       return acc;
@@ -111,6 +86,7 @@ useEffect(() => {
         backgroundColor: colores[colorClass], // Aquí asignamos el color de fondo
         fontWeight: "bold",
         borderRadius: "4px",
+        border: "1px solid black",
         color: "black", // Aseguramos que el texto sea blanco para contraste
       };
       return acc;
@@ -246,11 +222,18 @@ useEffect(() => {
                 {filtrado.length > 0&&nameDelete.length>0 ? (
                   <ul className="mt-2">
                     {filtrado.map((item) => (
+                      
                       <li
                         key={item.id}
                         className="flex justify-between items-center border-b p-2"
                       >
                         <span>{item.name}</span>
+                        <div
+                        key={item.id}
+                        className="flex justify-between items-center border-b p-2"
+                      >
+                        <span><span>{format(item.date,'eeee',{locale: es})}</span>, {format(item.date, 'PPP', {locale: es})}</span>
+                      </div>
                         <Button
                           variant="outline"
                           onClick={() => {
@@ -261,6 +244,8 @@ useEffect(() => {
                           Eliminar
                         </Button>
                       </li>
+                      
+                      
                     ))}
                   </ul>
                 ) : (
@@ -282,7 +267,9 @@ useEffect(() => {
             animate={{ opacity: showCalendar ? 0 : 1, y: showCalendar ? -100 : 0 }}
             exit={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={showCalendar? `w-9/12 h-full left-64 absolute transition border translate-x-44 z-1 border-white text-center `:`w-9/12 h-full left-64 absolute border border-white text-center`}>Con esta agenda podes organizar toda tu vida universitaria</motion.div>
+            className={showCalendar? `w-9/12 h-full left-64 absolute transition border translate-x-44 z-1 border-white text-center `:`w-9/12 h-full left-64 absolute border border-white text-center`}>
+              Con esta agenda podes organizar toda tu vida universitaria
+          </motion.div>
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: showCalendar ? 1 : 0, y: showCalendar ? 0 : -10 }}

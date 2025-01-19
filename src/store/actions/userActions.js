@@ -1,9 +1,6 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { useState } from "react";
 import axios from 'axios'
 import encriptar from "../../crypto/cypher";
-
-
 
 
 export const user_photo=createAction('user_photo',(obj)=>{
