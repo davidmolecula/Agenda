@@ -26,8 +26,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export function CalendarDemo() {
-
+  const user=useSelector(store=> store.userReducer.user)
   const agenda=useSelector(store=>store.dateReducer.agenda)
+  const agendaUser=agenda.filter(agenda=>{user.id===agenda.id?agenda:null})
+  console.log(agendaUser)
   const [date, setDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false); // Controla si el diálogo está abierto o cerrado
   const [showCalendar, setShowCalendar] = useState(false);
