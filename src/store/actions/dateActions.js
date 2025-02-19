@@ -13,7 +13,9 @@ export const date_picked=createAction('date_picked',(obj)=>{
 
 export const date_agenda=createAsyncThunk('date_agenda',async(obj)=>{
     try{
+        console.log(obj)
         const {data}= await axios.post('http://localhost:8000/api/auth/agenda', obj.data)
+        console.log(data)
             localStorage.setItem('agenda', JSON.stringify(data.response.agenda))
     return {
         success:data.success,
@@ -26,9 +28,10 @@ export const date_agenda=createAsyncThunk('date_agenda',async(obj)=>{
     }
 })
 
-export const date_getagenda = createAsyncThunk('date_getagenda', async () => {
+export const date_getagenda = createAsyncThunk('date_getagenda', async (userId) => {
     try {
-        const { data } = await axios.get('http://localhost:8000/api/agenda');
+        console.log(userId)
+        const {data}=await axios.post('http://localhost:8000/api/agenda',userId)
         return {
             success: data.success,
             agenda: data.agenda,
@@ -42,8 +45,7 @@ export const date_getagenda = createAsyncThunk('date_getagenda', async () => {
 });
 
 export const date_delete=createAsyncThunk('date_delete', async(obj)=>{
-    try{
-
+    try{   
         const {data}=await axios.post('http://localhost:8000/api/agenda/delete',obj)
         return{
             success:data.success

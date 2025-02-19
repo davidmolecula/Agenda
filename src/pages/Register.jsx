@@ -74,7 +74,7 @@ const Register = () => {
               htmlhtmlfor="FirstName"
               className="block text-sm font-medium text-gray-700 dark:text-gray-200"
             >
-              First Name
+              Nombre
             </label>
 
             <input
@@ -91,7 +91,7 @@ const Register = () => {
               htmlhtmlfor="LastName"
               className="block text-sm font-medium text-gray-700 dark:text-gray-200"
             >
-              Last Name
+              Apellido
             </label>
 
             <input
@@ -122,7 +122,7 @@ const Register = () => {
               htmlhtmlfor="Password"
               className="block text-sm font-medium text-gray-700 dark:text-gray-200"
             >
-              Password
+              Contraseña
             </label>
 
             <input

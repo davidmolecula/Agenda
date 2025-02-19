@@ -28,8 +28,6 @@ import { Label } from "@/components/ui/label";
 export function CalendarDemo() {
   const user=useSelector(store=> store.userReducer.user)
   const agenda=useSelector(store=>store.dateReducer.agenda)
-  const agendaUser=agenda.filter(agenda=>{user.id===agenda.id?agenda:null})
-  console.log(agendaUser)
   const [date, setDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false); // Controla si el diálogo está abierto o cerrado
   const [showCalendar, setShowCalendar] = useState(false);
@@ -74,7 +72,7 @@ const colores = {
     
     useEffect(() => {
       // Despacha la acción para obtener la agenda desde la API al cargar el componente
-      dispatch(date_getagenda());
+      dispatch(date_getagenda({id:user.id}));
     }, [dispatch]);
 
     const colorArrays = colors.reduce((acc, colorClass) => {
@@ -269,8 +267,8 @@ const colores = {
             animate={{ opacity: showCalendar ? 0 : 1, y: showCalendar ? -100 : 0 }}
             exit={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={showCalendar? `w-9/12 h-full left-64 absolute transition border translate-x-44 z-1 border-white text-center `:`w-9/12 h-full left-64 absolute border border-white text-center`}>
-              Con esta agenda podes organizar toda tu vida universitaria
+            className={showCalendar? `w-9/12 h-full left-64 absolute transition translate-x-44 z-1 text-center text-6xl `:`w-9/12 h-full left-64 absolute text-6xl text-center`}>
+                Tu herramienta de agenda y seguimiento de estudios, todo en un solo lugar
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: -10 }}

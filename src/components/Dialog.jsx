@@ -64,6 +64,7 @@ export function DialogDemo({ initialOpen = false,  title, description, fields, d
       [name]:value,
       date:date,
       color:colorSelected,
+      user: user.id
     })
   }
 
@@ -90,6 +91,7 @@ export function DialogDemo({ initialOpen = false,  title, description, fields, d
     if (formData.name && formData.description && formData.importance) {
       setStatus("saving");
       dispatch(date_agenda({ data: formData }));
+      console.log(formData)
     } else {
       setStatus("saving");
       setTimeout(() => setStatus("error"), 1000);
@@ -165,12 +167,10 @@ export function DialogDemo({ initialOpen = false,  title, description, fields, d
                               >
                                 <span className="text-sm font-medium"></span>
                               </Checkbox>
-                              
                             ))
                           } 
                           </div>  
                     </div>
-                  
                 ) : (
                   <Input
                     id={key}
