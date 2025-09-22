@@ -1,7 +1,7 @@
 import 'dotenv/config.js'
 import crypto from 'crypto'
 import { Buffer } from 'buffer';
-const secretKey=import.meta.env.VITE_SECRET_KEY_CIPHER;
+const secretKey=import.meta.env.VITE_APP_SECRET_KEY_CIPHER;
 const algoritmo='aes-256-cbc';
 const key=Buffer.from(secretKey,'hex')
 const iv=crypto.randomBytes(16)

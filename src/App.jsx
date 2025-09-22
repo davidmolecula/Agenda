@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { user_token } from './store/actions/userActions.js'
+import apiUrl from './api.js'
 
 
 function App() {
