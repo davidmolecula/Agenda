@@ -1,4 +1,4 @@
-import 'dotenv/config.js'
+/*import 'dotenv/config.js'
 import crypto from 'crypto'
 import { Buffer } from 'buffer';
 const secretKey=import.meta.env.VITE_APP_SECRET_KEY_CIPHER;
@@ -20,6 +20,6 @@ const encriptar=(account,password)=>{
 }
 
 
-export default encriptar
+export default encriptar */
 
 
