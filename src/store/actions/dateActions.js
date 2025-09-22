@@ -13,7 +13,7 @@ export const date_picked=createAction('date_picked',(obj)=>{
 
 export const date_agenda=createAsyncThunk('date_agenda',async(obj)=>{
     try{
-        const {data}= await axios.post('http://localhost:8000/api/auth/agenda', obj.data)
+        const {data}= await axios.post(`${apiUrl}/api/auth/agenda`, obj.data)
             localStorage.setItem('agenda', JSON.stringify(data.response.agenda))
     return {
         success:data.success,
@@ -28,8 +28,8 @@ export const date_agenda=createAsyncThunk('date_agenda',async(obj)=>{
 
 export const date_getagenda = createAsyncThunk('date_getagenda', async (userId) => {
     try {
-        const {data}=await axios.post('http://localhost:8000/api/agenda',userId)
-        const { data: feriadosResp } = await axios.post('http://localhost:8000/api/agenda/feriados');
+        const {data}=await axios.post(`${apiUrl}/api/agenda`,userId)
+        const { data: feriadosResp } = await axios.post(`${apiUrl}/api/agenda/feriados`);
         return {
             success: data.success,
             agenda: data.agenda,
@@ -46,7 +46,7 @@ export const date_getagenda = createAsyncThunk('date_getagenda', async (userId) 
 
 export const date_delete=createAsyncThunk('date_delete', async(obj)=>{
     try{   
-        const {data}=await axios.post('http://localhost:8000/api/agenda/delete',obj)
+        const {data}=await axios.post(`${apiUrl}/api/agenda/delete`,obj)
         return{
             success:data.success
         }
@@ -69,7 +69,7 @@ export const date_delete_filtered=createAction('date_delete_filtered',(obj)=>{
 export const date_tracking = createAsyncThunk('date_tracking', async (dataTracking) => {
     try {
 
-        const {data}=await axios.post('http://localhost:8000/api/auth/tracking', dataTracking.data)
+        const {data}=await axios.post(`${apiUrl}/api/auth/tracking`, dataTracking.data)
 
         return {
             success: data.success,
@@ -85,7 +85,7 @@ export const date_tracking = createAsyncThunk('date_tracking', async (dataTracki
 
 export const date_gettracking = createAsyncThunk('date_gettracking', async (obj) => {
     try {
-        const {data}=await axios.post('http://localhost:8000/api/agenda/tracking',obj)
+        const {data}=await axios.post(`${apiUrl}/api/agenda/tracking`,obj)
         return {
             success: data.success,
             tracking: data.tracking,

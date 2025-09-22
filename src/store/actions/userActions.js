@@ -11,7 +11,7 @@ export const user_photo=createAction('user_photo',(obj)=>{
 
 export const user_login=createAsyncThunk('user_login',async(obj)=>{
     try{
-            const {data}= await axios.post('http://localhost:8000/api/auth/signin', obj.data)
+            const {data}= await axios.post(`${apiUrl}/api/auth/signin`, obj.data)
             localStorage.setItem('token',data.response.token)
             localStorage.setItem('user', JSON.stringify(data.response.user))
             return {
@@ -29,7 +29,7 @@ export const user_login=createAsyncThunk('user_login',async(obj)=>{
 
 export const user_signup=createAsyncThunk('user_signup',async(obj)=>{
     try{
-            const {data}= await axios.post('http://localhost:8000/api/auth/signup', obj.data)
+            const {data}= await axios.post(`${apiUrl}/api/auth/signup`, obj.data)
             localStorage.setItem('user', JSON.stringify(data.response.user))
             return {
                 email:data.response.user.email
@@ -44,7 +44,7 @@ export const user_signup=createAsyncThunk('user_signup',async(obj)=>{
 
 export const user_logout=createAsyncThunk('user_logout',async(obj)=>{
     try{
-            const {data}= await axios.post('http://localhost:8000/api/auth/signout', obj)
+            const {data}= await axios.post(`${apiUrl}/api/auth/signout`, obj)
             localStorage.removeItem('token')
             localStorage.removeItem('user')
             return {
@@ -75,7 +75,7 @@ export const user_encrypted=createAsyncThunk('user_encrypted',async(formData)=>{
         formDataEncriptado.account=datosEncriptados.encryptedAcc
         formDataEncriptado.password=datosEncriptados.encryptedPass
         formDataEncriptado.iv=datosEncriptados.iv
-        const response= await axios.post('http://localhost:8000/api/users/encrypted', formDataEncriptado)
+        const response= await axios.post(`${apiUrl}/api/users/encrypted`, formDataEncriptado)
         //localStorage.setItem('account',data.response.user.account)
         //localStorage.setItem('password', JSON.stringify(data.response.user.password))
         return{
