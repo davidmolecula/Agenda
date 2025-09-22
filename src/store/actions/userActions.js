@@ -1,6 +1,6 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
-import encriptar from "../../crypto/cypher";
+//import encriptar from "../../crypto/cypher";
 import apiUrl from "@/api";
 
 export const user_photo=createAction('user_photo',(obj)=>{
@@ -68,7 +68,7 @@ export const user_token=createAction('user_token',(user)=>{
     }
 })
 
-export const user_encrypted=createAsyncThunk('user_encrypted',async(formData)=>{
+/*export const user_encrypted=createAsyncThunk('user_encrypted',async(formData)=>{
     try{
         const datosEncriptados=encriptar(formData.data.account,formData.data.password)
         const formDataEncriptado=formData.data
@@ -89,5 +89,5 @@ export const user_encrypted=createAsyncThunk('user_encrypted',async(formData)=>{
     }catch(error){
         console.log(error)
 }
-})
+})*/
 

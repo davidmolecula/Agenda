@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 const secretKey=import.meta.env.VITE_SECRET_KEY_CIPHER;
-import encriptar from './cypher';
+
 
 const desencriptar=(password)=>{
     const algoritmo='aes-256-cbc';
