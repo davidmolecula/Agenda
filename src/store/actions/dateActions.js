@@ -13,9 +13,7 @@ export const date_picked=createAction('date_picked',(obj)=>{
 
 export const date_agenda=createAsyncThunk('date_agenda',async(obj)=>{
     try{
-        console.log(obj)
         const {data}= await axios.post('http://localhost:8000/api/auth/agenda', obj.data)
-        console.log(data)
             localStorage.setItem('agenda', JSON.stringify(data.response.agenda))
     return {
         success:data.success,
@@ -30,16 +28,18 @@ export const date_agenda=createAsyncThunk('date_agenda',async(obj)=>{
 
 export const date_getagenda = createAsyncThunk('date_getagenda', async (userId) => {
     try {
-        console.log(userId)
         const {data}=await axios.post('http://localhost:8000/api/agenda',userId)
+        const { data: feriadosResp } = await axios.post('http://localhost:8000/api/agenda/feriados');
         return {
             success: data.success,
             agenda: data.agenda,
+            feriados: feriadosResp.feriados || [],
         };
     } catch (error) {
         return {
             success: false,
-            agenda:[]
+            agenda:[],
+            feriados: [],
         };
     }
 });
@@ -64,5 +64,38 @@ export const date_delete_filtered=createAction('date_delete_filtered',(obj)=>{
         payload:filtrado
     }
 })
+
+
+export const date_tracking = createAsyncThunk('date_tracking', async (dataTracking) => {
+    try {
+
+        const {data}=await axios.post('http://localhost:8000/api/auth/tracking', dataTracking.data)
+
+        return {
+            success: data.success,
+            tracking: data.response.tracking,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            tracking:{}
+        };
+    }
+});
+
+export const date_gettracking = createAsyncThunk('date_gettracking', async (obj) => {
+    try {
+        const {data}=await axios.post('http://localhost:8000/api/agenda/tracking',obj)
+        return {
+            success: data.success,
+            tracking: data.tracking,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            tracking:[]
+        };
+    }
+});
 
 export const resetSuccess = createAction("resetSuccess");

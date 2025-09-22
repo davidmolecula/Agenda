@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { user_login } from '../store/actions/userActions'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+
 
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch=useDispatch()
   const [formData,setFormData]=useState({
     email:'',
@@ -32,11 +34,10 @@ const Login = () => {
 <section className="relative flex flex-wrap bg-slate-200 dark:bg-gray-900 lg:h-screen lg:items-center">
   <div className="w-full px-4 py-12 sm:px-6 sm:py-16 lg:w-1/2 lg:px-8 lg:py-24">
     <div className="mx-auto max-w-lg dark:text-white text-center">
-      <h1 className="text-2xl font-bold sm:text-3xl">Get started today!</h1>
+      <h1 className="text-2xl font-bold sm:text-3xl">Hola David </h1>
 
       <p className="mt-4 text-gray-500">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero nulla eaque error neque
-        ipsa culpa autem, at itaque nostrum!
+        No programes con tus manos, el que programa con sus manos ha olvidado el rostro de su padre...
       </p>
     </div>
 
@@ -45,12 +46,12 @@ const Login = () => {
         <label htmlhtmlfor="email" className="sr-only">Email</label>
 
         <div className="relative">
-          <input
+          <input 
           onChange={handleInput}
             type="email"
             name="email"
-            className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-            placeholder="Enter email"
+            className="w-full text-black rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+            placeholder="Tu email"
           />
 
           <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -78,10 +79,10 @@ const Login = () => {
         <div className="relative">
           <input
           onChange={handleInput}
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
-            className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-            placeholder="Enter password"
+            className="w-full text-black rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+            placeholder="Tu contraseña"
           />
 
           <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -91,6 +92,7 @@ const Login = () => {
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              onClick={() => setShowPassword(!showPassword)}
             >
               <path
                 strokeLinecap="round"
@@ -111,8 +113,8 @@ const Login = () => {
 
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-500">
-          No account?
-          <a className="underline" href="">Sign up</a>
+          No tenes cuenta?  
+            <a className="underline" href="/register"> Registrate</a>
         </p>
 
         <button
@@ -128,7 +130,7 @@ const Login = () => {
   <div className="relative h-64 w-full sm:h-96 lg:h-full lg:w-1/2">
     <img
       alt="Welcome"
-      src="https://images.unsplash.com/photo-1630450202872-e0829c9d6172?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
+      src="https://i.imgur.com/udrKeeT.jpeg"
       className="absolute inset-0 h-full w-full object-cover"
     />
   </div>

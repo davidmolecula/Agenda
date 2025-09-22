@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { date_picked, date_getagenda, date_delete, date_delete_filtered} from "@/store/actions/dateActions";
 import { es } from "date-fns/locale/es";
 import { format } from "date-fns";
-import {DialogDemo} from "@/components/Dialog.jsx";
+import {DialogAgregar} from "@/components/Dialog.jsx";
 import DataTable from "./payments/dataTable.jsx";
 import { columns } from "./payments/columns.jsx";
 import { Button } from "@/components/ui/button";
@@ -24,10 +24,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-export function CalendarDemo() {
+import { AppSidebar } from "./app-sidebar.jsx";
+export function Agenda() {
   const user=useSelector(store=> store.userReducer.user)
   const agenda=useSelector(store=>store.dateReducer.agenda)
+  const feriados=useSelector(store=>store.dateReducer.feriados)
+  console.log(agenda,feriados)
+  const agendaYFeriados=[...agenda,...feriados??[]]
   const [date, setDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false); // Controla si el diálogo está abierto o cerrado
   const [showCalendar, setShowCalendar] = useState(false);
@@ -62,6 +65,18 @@ const colores = {
     }))
   }
 
+  const sendReminder = async () => {
+    await fetch("http://localhost:5000/send-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        to: "destinatario@gmail.com",
+        subject: "Tu recordatorio",
+        message: "Tienes un evento programado para mañana a las 10 AM.",
+      }),
+    });
+  };
+  
     useEffect(()=>{
       handleSelect(date)
     },[])
@@ -76,10 +91,13 @@ const colores = {
     }, [dispatch]);
 
     const colorArrays = colors.reduce((acc, colorClass) => {
-      acc[colorClass] = agenda.filter((item) => item.color === colorClass).map((item) => new Date(item.date));
+      acc[colorClass] = [
+        ...(agenda?.filter((item) => item.color === colorClass).map((item) => new Date(item.date)) || []),
+        ...(feriados?.filter((item) => item.color === colorClass).map((item) => new Date(item.date)) || [])
+      ];
       return acc;
     }, {});
-  
+    
     // Array de colores para usar en los modificadores
     const modifiersStyles = colors.reduce((acc, colorClass) => {
       acc[colorClass] = {
@@ -93,7 +111,8 @@ const colores = {
     }, {});
   return (
     <>
-    <div className="flex w-full space-x-12">
+    <div className="flex dark w-full space-x-12">
+      <AppSidebar></AppSidebar>
           <motion.div
               initial={{ opacity: 1, x: 20 }}  // Inicialmente está en su lugar, visible
               animate={{
@@ -105,93 +124,67 @@ const colores = {
             {date? <div className="p-2 h-16"><span className="capitalize rounded-xl">{format(date,'eeee',{locale: es})}</span>, {format(date, 'PPP', {locale: es})}</div>:<div className="p-2">No hay fechas seleccionadas</div>}
             <div className="flex w-full h-full justify-center gap-10">
             <div className="flex flex-col gap-3 w-56 h-72 border border-indigo-950 dark:bg-gradient-to-r from-indigo-800 to-indigo-900 justify-center shadow-2xl shadow-black rounded-xl">
-              <p className="text-center text-xl">Agenda</p>
-              <div className="flex flex-col gap-3">
-              <Dialog open={isOpen} onOpenChange={setIsOpen}>
-              <Button variant="outline"  onClick={toggleCalendar}>
-                
-                <motion.div
-              initial={{ opacity: 1, x: 0 }}  // Inicialmente está en su lugar, visible
-              animate={{
-                opacity: 1, 
-              }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}  // Animación suave
-              className="px-4 py-2 text-white rounded-md  focus:outline-none focus:ring focus:ring-blue-300"
-              onClick={toggleCalendar}>Ver agenda</motion.div>
-              </Button>
+              <p className="text-center text-xl dark:text-white text-black">Agenda</p>
+              <button onClick={sendReminder}>Enviar Recordatorio</button>
 
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Titulo</DialogTitle>
-                <DialogDescription>
-                  Descripcion
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                  <div key={1} className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor={2} className="text-right">
-                      label
-                    </Label>
-                    <Input
-                      id={1}
-                      name="david"
-                      defaultValue="pepe"
-                      className="col-span-3"
-                    />
-                  </div>
-              </div>
-              <DialogFooter>
-                <Button type="submit" >
-                  hola
+              
+  
+                <Button variant="outline"  onClick={toggleCalendar} >
+                  
+                  <motion.div
+                initial={{ opacity: 1, x: 0 }}  // Inicialmente está en su lugar, visible
+                animate={{
+                  opacity: 1, 
+                }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}  // Animación suave
+                className="px-4 py-2 text-black dark:text-white rounded-md  focus:outline-none focus:ring focus:ring-blue-300"
+                onClick={toggleCalendar}>Ver agenda</motion.div>
                 </Button>
-              </DialogFooter>
-            </DialogContent>
-              </Dialog>
-              <DialogDemo title="Agregar" fields={{
+              {/* Aca se usa DialogAgregar que es el dialogo especifico para "Agregar" */}
+              <DialogAgregar  title="Agregar" fields={{
                                   name: "Nombre",
                                   description: "Descripcion",
                                   importance: "Importancia",
                                   }} date={date}>
                           
-              </DialogDemo>
-            <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" onClick={() => setIsOpen(true)}>
-                Modificar
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Titulo</DialogTitle>
-                <DialogDescription>
-                  Descripcion
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                  <div key={1} className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor={2} className="text-right">
-                      label
-                    </Label>
-                    <Input
-                      id={1}
-                      name="david"
-                      defaultValue="pepe"
-                      className="col-span-3"
-                    />
-                  </div>
-              </div>
-              <DialogFooter>
-                <Button type="submit" >
-                  hola
+              </DialogAgregar>
+            <Dialog >
+              <DialogTrigger asChild>
+                <Button variant="outline" className="text-black dark:text-white" onClick={() => setIsOpen(true)}>
+                  Modificar
                 </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Titulo</DialogTitle>
+                  <DialogDescription>
+                    Descripcion
+                  </DialogDescription>
+                </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <div key={1} className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor={2} className="text-right">
+                        label
+                      </Label>
+                      <Input
+                        id={1}
+                        name="david"
+                        defaultValue="pepe"
+                        className="col-span-3"
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button type="submit"  >
+                    
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+            </Dialog>
 
-
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <Dialog>
             <DialogTrigger asChild>
-              <Button variant="outline" onClick={() => setIsOpen(true)}>
+              <Button variant="outline" className="text-black dark:text-white" onClick={() => setIsOpen(true)}>
                 Eliminar
               </Button>
             </DialogTrigger>
@@ -260,16 +253,9 @@ const colores = {
 
               </div>
             </div>
-            </div>   
+          
           </motion.div>
-          <motion.div
-            initial={{ opacity: 1, y: -100 }}
-            animate={{ opacity: showCalendar ? 0 : 1, y: showCalendar ? -100 : 0 }}
-            exit={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={showCalendar? `w-9/12 h-full left-64 absolute transition translate-x-44 z-1 text-center text-6xl `:`w-9/12 h-full left-64 absolute text-6xl text-center`}>
-                Tu herramienta de agenda y seguimiento de estudios, todo en un solo lugar
-          </motion.div>
+          
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: showCalendar ? 1 : 0, y: showCalendar ? 0 : -10 }}
@@ -285,6 +271,7 @@ const colores = {
                 mode="single"
                 selected={date}
                 onSelect={handleSelect}
+                locale={es}
                 className="rounded-md border"
                 modifiers={colorArrays} // Usamos los arrays de fechas por color como modificadores
                 modifiersStyles={modifiersStyles}
@@ -295,9 +282,9 @@ const colores = {
             animate={{ opacity: showCalendar ? 1 : 0, y: showCalendar ? 0 : -10 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.9, ease: "easeInOut" }}
-            className="mt-4">
+            className="mt-4 ">
               {showCalendar && (
-          <DataTable data={agenda} date={date} columns={columns} />)}
+          <DataTable data={agendaYFeriados} date={date} columns={columns} />)}
           </motion.div>
     </div>
     </>

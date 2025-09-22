@@ -12,12 +12,14 @@ const ButtonsTheme = ()=> {
         return 'light'
     })
     useEffect(()=>{
-        if(theme==='dark')
+        if(theme==='light')
         {
             document.querySelector('html').classList.remove('dark')
+            document.querySelector('body').classList.remove('dark')
             sunRef.current.classList.add('hidden')
         }else{
             document.querySelector('html').classList.add('dark')
+            document.querySelector('body').classList.add('dark')
             sunRef.current.classList.remove('hidden') 
         }
     },[theme])

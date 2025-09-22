@@ -5,7 +5,10 @@ import Landing from "../pages/Landing.jsx";
 import Register from "../pages/Register.jsx"
 import ProtectedRoute from "./protectedRoute.jsx";
 import ProtectSesion from "./protectSesion.jsx";
-import { CalendarDemo } from "@/components/Calendario.jsx";
+import { Agenda } from "@/components/Agenda.jsx";
+import ToDoList from "@/components/ToDoList.jsx";
+import {Tracking} from '@/pages/Seguimiento.jsx';
+
 
 const router=createBrowserRouter([
     {
@@ -13,28 +16,27 @@ const router=createBrowserRouter([
         element: <Landing/>,
         children:[
             {
-                path:'/',
+                path:'/inicio',
                 element:
                 <ProtectedRoute path='/'>
-                    <Home/>
-                </ProtectedRoute>
-                
+                    <Agenda></Agenda> 
+                </ProtectedRoute> 
             },
             
             {
-                path:'/login',
+                path:'/',
                 element: 
-                <ProtectSesion path='/'>
+                <ProtectSesion path='/inicio'>
                     <Login/>
                 </ProtectSesion>
             },
-            {
+            /*{
                 path:'/register',
                 element:
                     <ProtectSesion path='/'>
                         <Register/>
                     </ProtectSesion>
-            },
+            },*/
             {
                 path:'/404',
                 element: <h1>Error 404</h1>
@@ -43,7 +45,18 @@ const router=createBrowserRouter([
                 path:'/calendario',
                 element:
                 <ProtectedRoute path='/calendario'>
-                    <CalendarDemo></CalendarDemo> 
+                    <Agenda></Agenda> 
+                </ProtectedRoute> 
+            },
+            {
+                path:'/todo',
+                element:<ToDoList/>
+            },
+            {
+                path:'/seguimiento',
+                element:
+                <ProtectedRoute path='/seguimiento'>
+                    <Tracking></Tracking> 
                 </ProtectedRoute> 
             },
         ]

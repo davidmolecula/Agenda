@@ -4,7 +4,7 @@ import Encrypting from '../pages/encrypting'
 const Home = () => {
 return (
     <>
-        <Encrypting/>
+    
     </>
 )
 }

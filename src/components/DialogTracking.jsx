@@ -12,20 +12,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { date_agenda, resetSuccess} from "@/store/actions/dateActions";
+import { date_tracking, resetSuccess} from "@/store/actions/dateActions";
 import { Checkbox } from "@/components/ui/checkbox"
 
-export function DialogAgregar({ initialOpen = false,  title, description, fields, date }) {
+export function DialogTracking({ initialOpen = false,  title, description, fields, date }) {
   const user=useSelector(store=> store.userReducer.user)
   const [status, setStatus] = useState("idle"); // Posibles valores: "idle", "saving", "success", "error"
   const [isOpen, setIsOpen] = useState(false); // Controla si el diálogo está abierto o cerrado
   const [colorSelected,setColorSelected]=useState("")
   const [formData,setFormData]=useState({
-    name:"",
-    description:"",
-    importance:"",
-    date:{},
-    color:"bg-indigo-500",
+    meassure:0,
     user:user.id,
     type:"usuario"
   })
@@ -54,8 +50,8 @@ export function DialogAgregar({ initialOpen = false,  title, description, fields
     'bg-green-400': 'bg-green-600',  // Evento positivo
   };
   const dispatch=useDispatch()
-  const { success, lastAction } = useSelector((store) => store.dateReducer);
-  const agendaSuccess = success && lastAction === "date_agenda";
+const { success, lastAction } = useSelector((store) => store.dateReducer);
+  const trackingSuccess = success && lastAction === "date_tracking";
 
   const handleInput=(event)=>{
     const { name, value } = event.target; 
@@ -63,36 +59,35 @@ export function DialogAgregar({ initialOpen = false,  title, description, fields
       ...formData,
       [name]:value,
       date:date,
-      color:colorSelected,
       user: user.id,
       type:"usuario"
     })
   }
 
   useEffect(() => {
-    if (agendaSuccess) {
-      setStatus("saving");
-      setTimeout(() => setStatus("success"), 500);
-      setTimeout(() => {
-        setIsOpen(false); // Cierra el diálogo
-        setStatus("idle");
-        dispatch(resetSuccess()); // Limpia el estado global
-      }, 500);
-    } else if (lastAction === "date_agenda" && !success) {
-      setStatus("error");
-      setTimeout(() => setStatus("idle"), 500);
-      dispatch(resetSuccess());
-    }
-  }, [lastAction, success, dispatch]);
+      if (trackingSuccess) {
+        setStatus("saving");
+        setTimeout(() => setStatus("success"), 500);
+        setTimeout(() => {
+          setIsOpen(false); // Cierra el diálogo
+          setStatus("idle");
+          dispatch(resetSuccess()); // Limpia el estado global
+        }, 500);
+      } else if (lastAction === "date_tracking" && !success) {
+        setStatus("error");
+        setTimeout(() => setStatus("idle"), 500);
+        dispatch(resetSuccess());
+      }
+    }, [lastAction, success, dispatch]);
 
   const handleSaveAgenda = (event) => {
     event.preventDefault();
     // Si hubo un error previo, limpiamos el estado de error
       setStatus("idle");
-    if (formData.name && formData.description && formData.importance) {
+
+    if (formData.meassure ) {
       setStatus("saving");
-      dispatch(date_agenda({ data: formData }));
-      console.log(formData)
+      dispatch(date_tracking({ data: formData }));
     } else {
       setStatus("saving");
       setTimeout(() => setStatus("error"), 1000);
@@ -115,10 +110,10 @@ export function DialogAgregar({ initialOpen = false,  title, description, fields
   useEffect(() => {
     if (!isOpen) {
       setFormData({
-        name: "",
-        description: "",
-        importance: "",
-        date:{}
+      meassure:0,
+      user: user.id,
+      date:date,
+      type:"usuario"
       });
       setTimeout(() => setStatus("idle"), 2000);
       

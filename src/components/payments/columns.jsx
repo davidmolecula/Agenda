@@ -19,7 +19,7 @@ export const columns = [
       return (
         <Button
           variant="ghost"
-          className="w-56 h-10 border text-right font-medium"
+          className="w-36 h-10 border text-right font-medium"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Nombre
@@ -29,7 +29,7 @@ export const columns = [
     },
     cell: ({ row }) => {
       const name = row.getValue("name")
-      return <div className="w-56 h-8 flex items-center justify-center border font-medium">{name}</div>;
+      return <div className="w-36 h-12 text-sm flex items-center justify-center border font-medium">{name}</div>;
     },
   },
   {
@@ -37,7 +37,7 @@ export const columns = [
     header: () => <div className="w-48 h-10 border flex items-center justify-center">Descripcion</div>,
     cell: ({ row }) => {
       const description = row.getValue("description")
-      return <div className="w-48 border h-8 flex items-center justify-center font-medium">{description}</div>;
+      return <div className="w-48 border h-12 text-sm flex items-center justify-center font-medium">{description}</div>;
   },
   },
   {
@@ -45,7 +45,7 @@ export const columns = [
     header: () => <div className="w-36 !m-0 !p-0 h-10 border flex items-center justify-center">Importancia</div>,
     cell: ({ row }) => {
       const importance = row.getValue("importance")
-      return <div className="w-36 h-8 flex items-center justify-center border  font-medium">{importance}</div>;
+      return <div className="w-36 h-12 flex items-center justify-center border  font-medium">{importance}</div>;
   },
   },
   {
@@ -53,7 +53,7 @@ export const columns = [
     header: () => <div className="w-24 h-10 !m-0 !p-0 border flex items-center justify-center">Fecha</div>,
     cell: ({ row }) => {
       const date = row.getValue("date")
-      return <div className="w-24 h-8 border flex items-center justify-center font-medium">{format(date,'PP',{locale: es})}</div>;
+      return <div className="w-24 h-12 border flex items-center justify-center font-medium">{format(date,'PP',{locale: es})}</div>;
   },
   },
   {
