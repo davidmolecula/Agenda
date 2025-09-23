@@ -26,7 +26,7 @@ export function DialogAgregar({ initialOpen = false,  title, description, fields
     importance:"",
     date:{},
     color:"bg-indigo-500",
-    user:user.id,
+    user:user?.id,
     type:"usuario"
   })
   useEffect(() => {
@@ -64,7 +64,7 @@ export function DialogAgregar({ initialOpen = false,  title, description, fields
       [name]:value,
       date:date,
       color:colorSelected,
-      user: user.id,
+      user: user?.id,
       type:"usuario"
     })
   }
@@ -92,7 +92,6 @@ export function DialogAgregar({ initialOpen = false,  title, description, fields
     if (formData.name && formData.description && formData.importance) {
       setStatus("saving");
       dispatch(date_agenda({ data: formData }));
-      console.log(formData)
     } else {
       setStatus("saving");
       setTimeout(() => setStatus("error"), 1000);

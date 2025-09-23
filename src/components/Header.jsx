@@ -60,7 +60,7 @@ const Header = () => {
             <div className="flex gap-4">
             <ButtonTheme/>
             {user? null:<LinksHeader text='Iniciar sesión' link='/' color='gray-100'/>}
-            {/*{user? null:<LinksHeader text='Registrate' link='/register' color='transparent'/>}*/}
+            {user? null:<LinksHeader text='Registrate' link='/register' color='transparent'/>}
             {user? <LinksHeader text='Cerrar sesión'  color='transparent'/>:null}
             </div>
 

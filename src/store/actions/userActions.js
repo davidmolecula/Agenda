@@ -68,7 +68,7 @@ export const user_token=createAction('user_token',(user)=>{
     }
 })
 
-/*export const user_encrypted=createAsyncThunk('user_encrypted',async(formData)=>{
+export const user_encrypted=createAsyncThunk('user_encrypted',async(formData)=>{
     try{
         const datosEncriptados=encriptar(formData.data.account,formData.data.password)
         const formDataEncriptado=formData.data
@@ -89,5 +89,5 @@ export const user_token=createAction('user_token',(user)=>{
     }catch(error){
         console.log(error)
 }
-})*/
+})
 

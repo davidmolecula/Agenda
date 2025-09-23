@@ -13,7 +13,7 @@ const encrypting = () => {
 
     let dispatch=useDispatch()
     const data=useSelector((store)=>store.userReducer)
-    console.log(data)
+
 
     const [formData,setFormData]=useState({
         platform:"",

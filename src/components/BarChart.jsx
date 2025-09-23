@@ -48,7 +48,6 @@ export function ChartBarInteractive({chartData}) {
     },
     [chartData]
   )
-console.log(total.desktop, total.mobile)
   return (
     <Card className="py-0">
       <CardHeader className="flex flex-col items-stretch border-b !p-0 sm:flex-row">

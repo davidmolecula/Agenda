@@ -29,7 +29,7 @@ export function Agenda() {
   const user=useSelector(store=> store.userReducer.user)
   const agenda=useSelector(store=>store.dateReducer.agenda)
   const feriados=useSelector(store=>store.dateReducer.feriados)
-  console.log(agenda,feriados)
+
   const agendaYFeriados=[...agenda,...feriados??[]]
   const [date, setDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false); // Controla si el diálogo está abierto o cerrado
@@ -87,7 +87,7 @@ const colores = {
     
     useEffect(() => {
       // Despacha la acción para obtener la agenda desde la API al cargar el componente
-      dispatch(date_getagenda({id:user.id}));
+      dispatch(date_getagenda({id:user?.id}));
     }, [dispatch]);
 
     const colorArrays = colors.reduce((acc, colorClass) => {
