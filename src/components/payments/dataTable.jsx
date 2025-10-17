@@ -52,7 +52,7 @@ function DataTable({ data, date, columns }) {
           className="max-w-sm"
         />
       </div>
-      <table className="flex flex-col gap-10">
+      <table className="flex flex-col border border-violet-500 rounded-xl">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -78,9 +78,9 @@ function DataTable({ data, date, columns }) {
             </tr>
           ))}
         </thead>
-        <tbody className="flex flex-col w-96">
+        <tbody className="flex flex-col border border-violet-500 border-b-transparent border-l-transparent border-r-transparent">
           {comparedData.length === 0 ? (
-            <tr>
+            <tr >
               <td colSpan={columns.length}>
                 No hay datos para la fecha seleccionada
               </td>

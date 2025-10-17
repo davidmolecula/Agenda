@@ -7,6 +7,7 @@ import ProtectSesion from "./protectSesion.jsx";
 import { Agenda } from "@/components/Agenda.jsx";
 import ToDoList from "@/components/ToDoList.jsx";
 import {Tracking} from '@/pages/Seguimiento.jsx';
+import Todo from "@/pages/Todo.jsx";
 
 
 const router=createBrowserRouter([
@@ -48,16 +49,17 @@ const router=createBrowserRouter([
                 </ProtectedRoute> 
             },
             {
-                path:'/todo',
-                element:<ToDoList/>
-            },
-            {
                 path:'/seguimiento',
                 element:
                 <ProtectedRoute path='/seguimiento'>
                     <Tracking></Tracking> 
                 </ProtectedRoute> 
             },
+            {
+                path:'/todo',
+                element:
+                <Todo></Todo>
+            }
         ]
     }
 ])
