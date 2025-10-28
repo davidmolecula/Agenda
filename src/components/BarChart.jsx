@@ -20,30 +20,30 @@ export const description = "An interactive bar chart"
 
 
 const chartConfig = {
-  views: {
-    label: "Page Views",
+  dato: {
+    label: "dato",
   },
-  desktop: {
-    label: "Desktop",
+  dato2: {
+    label: "dato2",
     color: "var(--chart-2)",
   },
-  mobile: {
-    label: "Mobile",
+  dato3: {
+    label: "dato3",
     color: "var(--chart-1)",
   },
 }
 
-export function ChartBarInteractive({chartData}) {
-  const [activeChart, setActiveChart] =React.useState("desktop")
+export function ChartBarInteractive({chartData, title, description}) {
+  const [activeChart, setActiveChart] =React.useState("dato2")
 
   const total = React.useMemo(
     () => {
       if (!chartData || chartData.length === 0) {
-    return { desktop: 0, mobile: 0 }; // valor por defecto mientras carga
+    return { dato2: 0, dato3: 0 }; // valor por defecto mientras carga
   }
       return{
-      desktop: chartData.reduce((acc, curr) => acc + curr.desktop, 0),
-      mobile: chartData.reduce((acc, curr) => acc + curr.mobile, 0),
+      dato2: chartData.reduce((acc, curr) => acc + curr.dato2, 0),
+      dato3: chartData.reduce((acc, curr) => acc + curr.dato3, 0),
     }
     },
     [chartData]
@@ -52,13 +52,13 @@ export function ChartBarInteractive({chartData}) {
     <Card className="py-0">
       <CardHeader className="flex flex-col items-stretch border-b !p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 pt-4 pb-3 sm:!py-0">
-          <CardTitle>Bar Chart - Interactive</CardTitle>
+          <CardTitle>{title}</CardTitle>
           <CardDescription>
-            Showing total visitors for the last 3 months
+            {description}
           </CardDescription>
         </div>
         <div className="flex">
-          {["desktop", "mobile"].map((key) => {
+          {["dato2", "dato3"].map((key) => {
             const chart = key;
             return (
               <button
@@ -110,7 +110,7 @@ export function ChartBarInteractive({chartData}) {
               content={
                 <ChartTooltipContent
                   className="w-[150px]"
-                  nameKey="views"
+                  nameKey="dato"
                   labelFormatter={(value) => {
                     return new Date(value).toLocaleDateString("en-US", {
                       month: "short",

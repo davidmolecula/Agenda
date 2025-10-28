@@ -13,14 +13,19 @@ import { Label } from "@/components/ui/label";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { date_tracking, resetSuccess} from "@/store/actions/dateActions";
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox } from "../components/ui/checkbox.jsx"
 
-export function DialogTracking({ initialOpen = false,  title, description, fields, date }) {
+export function DialogToDo({ initialOpen = false,  title, description, fields, date }) {
   const user=useSelector(store=> store.userReducer.user)
   const [status, setStatus] = useState("idle"); // Posibles valores: "idle", "saving", "success", "error"
   const [isOpen, setIsOpen] = useState(false); // Controla si el diálogo está abierto o cerrado
-  const [colorSelected,setColorSelected]=useState("")
   const [formData,setFormData]=useState({
+    meassure:3,
+    user: user?.id || null,
+    date:date,
+    task:"",
+    fixed:false,
+    type:"usuario"
   })
   useEffect(() => {
     if (user?.id) {
@@ -30,36 +35,10 @@ export function DialogTracking({ initialOpen = false,  title, description, field
       }));
     }
   }, [user]);
-  const colors = [
-  'bg-red-500',      // Alerta
-  'bg-yellow-400',   // Fecha importante
-  'bg-indigo-500',   // Base principal
-  'bg-purple-400',   // Evento especial
-  'bg-blue-400',     // Evento neutro
-  'bg-green-400',    // Evento positivo
-];
-  const colorMapping = {
-    'bg-red-500': 'bg-red-700',      // Alerta
-    'bg-yellow-400': 'bg-yellow-600',// Fecha importante
-    'bg-indigo-500': 'bg-indigo-700',// Base principal
-    'bg-purple-400': 'bg-purple-600',// Evento especial
-    'bg-blue-400': 'bg-blue-600',    // Evento neutro
-    'bg-green-400': 'bg-green-600',  // Evento positivo
-  };
-  const dispatch=useDispatch()
-const { success, lastAction } = useSelector((store) => store.dateReducer);
-  const trackingSuccess = success && lastAction === "date_tracking";
 
-  const handleInput=(event)=>{
-    const { name, value } = event.target; 
-    setFormData({
-      ...formData,
-      [name]:value,
-      date:date,
-      user: user.id,
-      type:"usuario"
-    })
-  }
+const dispatch=useDispatch()
+const { success, lastAction } = useSelector((store) => store.dateReducer);
+const trackingSuccess = success && lastAction === "date_tracking";
 
   useEffect(() => {
       if (trackingSuccess) {
@@ -77,6 +56,25 @@ const { success, lastAction } = useSelector((store) => store.dateReducer);
       }
     }, [lastAction, success, dispatch]);
 
+  const handleInput=(event)=>{
+    const { name, value } = event.target; 
+    setFormData({
+      ...formData,
+      [name]:value,
+      date:date,
+      user: user?.id||null,
+      type:"usuario"
+    })
+  }
+
+  const handleChecked = (checked) => {
+
+    setFormData({
+      ...formData,
+      fixed:checked? 1:2,  
+    })
+  };
+
   const handleSaveAgenda = (event) => {
     event.preventDefault();
     // Si hubo un error previo, limpiamos el estado de error
@@ -91,31 +89,6 @@ const { success, lastAction } = useSelector((store) => store.dateReducer);
       // Mostrar error si hay campos vacíos
     }
   };
-
-  const handleChecked = (event) => {
-    const selectedColor = event.target.getAttribute("data-name");
-    setColorSelected((prevColor) => 
-      prevColor === selectedColor ? "" : selectedColor
-    );
-
-    setFormData({
-      ...formData,
-      color:selectedColor
-    });
-  };
-
-  useEffect(() => {
-    if (!isOpen) {
-      setFormData({
-      meassure:0,
-      user: user?.id || null,
-      date:date,
-      type:"usuario"
-      });
-      setTimeout(() => setStatus("idle"), 2000);
-      
-    }
-  }, [isOpen,status]);
 
   return (
     //Este dialog se usa solo en AGREGAR de la AGENDA"
@@ -135,45 +108,25 @@ const { success, lastAction } = useSelector((store) => store.dateReducer);
         <div className="grid gap-4 py-4">
           {/* Mapear las propiedades del objeto fields */}
           {Object.entries(fields).map(([key,value]) => (
-            <div  key={key} className={key==='importance'?`flex text-black  dark:text-white grid-cols-4 items-center gap-4` :`grid  grid-cols-4 items-center gap-4`}>
+            <div  key={key} className="grid  grid-cols-4 items-center gap-4">
               <Label htmlFor={key} className="flex self-start justify-center pt-3">
                 {value}
               </Label>
-                {key.toLowerCase() === "importance" ? (
-                  
-                  <div className="flex flex-col  h-32  gap-10">
-                        <Input
-                        id={key}
-                        name={key}
-                        onChange={handleInput}
-                        className={`ml-2 w-24  align-center  items-center rounded-lg justify-center h-10 border ${colorSelected}`}
-                      />
-                        <div className="flex  items-center gap-2">
-                        {colors.map((color) => (
-                              <Checkbox
-                                key={color}
-                                data-name={color}
-                                onClick={handleChecked}
-                                checked={colorSelected === color}
-                                className={`flex items-center rounded-lg justify-center w-8 h-8  ${
-                                  colorSelected === color ? colorMapping[color] : color
-                                }` }
-                              >
-                                <span className="text-sm font-medium"></span>
-                              </Checkbox>
-                            ))
-                          } 
-                          </div>  
-                    </div>
-                ) : (
-                  <Input
+                <Input
                     id={key}
                     name={key}
                     onChange={handleInput}
                     className="col-span-3 "
-                  />
-              )    
-              } 
+                />
+                <div className="flex gap-3 border border-red-500 w-fit">
+                <div className="flex gap-3">
+                    <Checkbox
+                    id="toggle"
+                    onCheckedChange={(checked) =>
+                      handleChecked(checked)}/>
+                    <Label htmlFor="toggle" className="border border-grey-300 w-14">Tarea fija</Label>
+                </div>
+                </div>
             </div>
           ))}
         </div>

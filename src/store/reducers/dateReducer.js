@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { date_picked, date_agenda, resetSuccess, date_getagenda, date_delete, date_delete_filtered, date_tracking, date_gettracking} from "../actions/dateActions";
+import { date_picked, date_agenda, resetSuccess, date_getagenda, date_delete, date_delete_filtered, date_tracking, date_gettracking, color} from "../actions/dateActions";
 
 const initialState = {
     date: "",
@@ -8,7 +8,15 @@ const initialState = {
     lastAction: null, // Para identificar la acción exitosa
     tracking:[{
         
-    }]
+    }],
+  data:[{
+    meassure:3,
+    user: null,
+    date:null,
+    task:"",
+    fixed:false,
+    type:"usuario"
+  }]
 }
 
 const dateReducer = createReducer(initialState, (builder) =>
@@ -78,6 +86,12 @@ const dateReducer = createReducer(initialState, (builder) =>
                 success: action.payload.success,
                 // También asegúrate de que el payload de agenda sea un arreglo
                 tracking: Array.isArray(action.payload.tracking) ? action.payload.tracking : [action.payload.tracking]
+            }
+        })
+        .addCase(color, (state, action) => {
+            return {
+                ...state,
+                color: action.payload.color
             }
         })
 )

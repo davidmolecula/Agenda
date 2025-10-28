@@ -16,6 +16,7 @@ export function Tracking() {
   const agenda=useSelector(store=>store.dateReducer.agenda)
   const feriados=useSelector(store=>store.dateReducer.feriados)
   const tracking=useSelector(store=>store.dateReducer.tracking)
+  console.log(tracking)
   const [date, setDate] = useState(new Date());
   const [filtrado,setFiltrado]=useState("")
   const dispatch=useDispatch()  
@@ -94,7 +95,7 @@ let meassureTotal = dateFound.reduce((accumulator, currentValue) => {
   return accumulator + (currentValue.meassure || 0);
 }, 0);
 
-const chartData=tracking.map(tracking=> ({date:tracking.date, desktop: tracking.meassure, mobile: 400 }))
+const chartData=tracking.map(tracking=> ({date:tracking.date, dato2: tracking.meassure, dato3: 1  }))
 
 
   return (
@@ -121,26 +122,26 @@ const chartData=tracking.map(tracking=> ({date:tracking.date, desktop: tracking.
                                   </DialogTracking>
       
         <ChartRadialShape  chartData={[{
-                                  browser: "Nombre",
+                                  dato: "Nombre",
                                   meassure: meassureTotal,
                                   fill: "var(--chart-1)",
                                   
                                               endAngle:meassureTotal*360/8,
                                               innerRadius:90,
                                               outerRadius:160,
-                                              cardTitle:"Horas de estudio",
+                                              cardTitle:`Horas de estudio del día ${date.getDate()}/${date.getMonth()}`,
                                               cardDescription:"Medidas en horas (máximo 8)"
                                   }]}
                                   chartConfig = {{
-                                        visitors: {
-                                          label: "Visitors",
+                                        dato: {
+                                          label: "Dato",
                                         },
-                                        browser: {
-                                          label: "Browser",
+                                        dato2: {
+                                          label: "Dato2",
                                           color: "var(--chart-2)",
                                         }}}></ChartRadialShape>
 </div>
-<ChartBarInteractive chartData={chartData}></ChartBarInteractive>
+<ChartBarInteractive chartData={chartData} title='Titulo' description='Descripcion'></ChartBarInteractive>
     </div>
     </>
   )

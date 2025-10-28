@@ -1,13 +1,16 @@
 import React from 'react'
+import ToDoList from '../components/ToDoList.jsx'
+import { columns } from "../components/payments/columns.jsx";
+import { useSelector } from 'react-redux';
 
 const Todo = () => {
+
+  const agenda=useSelector(store=>store.dateReducer.agenda)
+  const feriados=useSelector(store=>store.dateReducer.feriados)
+  const agendaYFeriados=[...agenda,...feriados??[]]
   return (
     <div>
-        <h1>Tareas</h1>
-        <div className='flex'>
-            <p className='p-1 border border-white rounded-xl bg-green-300 text-black '>Esta seria la tarea del dia</p>
-            <button className='border p-1'>check</button>
-        </div>
+        <ToDoList></ToDoList>
     </div>
   )
 }

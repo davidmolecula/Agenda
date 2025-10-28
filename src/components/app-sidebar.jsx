@@ -18,11 +18,7 @@ const items = [
     url: "#",
     icon: Home,
   },
-  {
-    title: "Seguimiento",
-    url: "seguimiento",
-    icon: Inbox,
-  },
+ 
   {
     title: "Calendar",
     url: "#",

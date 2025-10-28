@@ -39,19 +39,20 @@ const Header = () => {
             <li>
                 <Link
                 className="text-blacktransition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                href="/"
+                href="/agenda"
                 >
-                Encriptador
+                Agenda
                 </Link>
             </li>
             <li>
-                <Link
-                className="text-blacktransition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                href="/"
-                >
-                Seguimiento de estudios
-                </Link>
+                <LinksHeader text='Seguimiento' link='/seguimiento' color='gray-100'/>
             </li>
+            <li>
+                <LinksHeader text='Tareas' link='/todo' color='gray-100'/>
+            </li>
+
+
+
             </ul>
         </nav>
 

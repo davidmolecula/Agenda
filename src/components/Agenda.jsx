@@ -112,7 +112,7 @@ const colores = {
   return (
     <>
     <div className="flex dark w-full space-x-12">
-      <AppSidebar></AppSidebar>
+
           <motion.div
               initial={{ opacity: 1, x: 20 }}  // Inicialmente está en su lugar, visible
               animate={{

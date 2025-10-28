@@ -66,7 +66,6 @@ export const date_delete_filtered=createAction('date_delete_filtered',(obj)=>{
     }
 })
 
-
 export const date_tracking = createAsyncThunk('date_tracking', async (dataTracking) => {
     try {
 
@@ -98,5 +97,14 @@ export const date_gettracking = createAsyncThunk('date_gettracking', async (obj)
         };
     }
 });
+
+export const color=createAction('color',(obj)=>{
+    console.log(obj)
+    const color='bg-red-500'
+    console.log(color)
+    return {
+        payload:color
+    }
+})
 
 export const resetSuccess = createAction("resetSuccess");

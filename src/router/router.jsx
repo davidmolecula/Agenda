@@ -7,7 +7,7 @@ import ProtectSesion from "./protectSesion.jsx";
 import { Agenda } from "@/components/Agenda.jsx";
 import ToDoList from "@/components/ToDoList.jsx";
 import {Tracking} from '@/pages/Seguimiento.jsx';
-import Todo from "@/pages/Todo.jsx";
+import Todo from "../pages/Todo.jsx";
 
 
 const router=createBrowserRouter([
