@@ -34,10 +34,10 @@ const Login = () => {
 <section className="relative flex flex-wrap bg-slate-200 dark:bg-gray-900 lg:h-screen lg:items-center">
   <div className="w-full px-4 py-12 sm:px-6 sm:py-16 lg:w-1/2 lg:px-8 lg:py-24">
     <div className="mx-auto max-w-lg dark:text-white text-center">
-      <h1 className="text-2xl font-bold sm:text-3xl">Hola David </h1>
+      <h1 className="text-2xl font-bold sm:text-3xl">¡Hola de nuevo!</h1>
 
       <p className="mt-4 text-gray-500">
-        No programes con tus manos, el que programa con sus manos ha olvidado el rostro de su padre...
+        Proximamente iniciar sesion con Google
       </p>
     </div>
 
@@ -50,7 +50,7 @@ const Login = () => {
           onChange={handleInput}
             type="email"
             name="email"
-            className="w-full text-black rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+            className="w-full text-black rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-xs dark: text-white"
             placeholder="Tu email"
           />
 
@@ -81,7 +81,7 @@ const Login = () => {
           onChange={handleInput}
             type={showPassword ? "text" : "password"}
             name="password"
-            className="w-full text-black rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+            className="w-full text-black rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-xs dark:text-white"
             placeholder="Tu contraseña"
           />
 
@@ -119,9 +119,9 @@ const Login = () => {
 
         <button
           type="submit"
-          className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
+          className="rounded-xl border border-transparent text-indigo-700 hover:text-white duration-100  hover:bg-linear-to-r from-indigo-500 to-indigo-900 dark:bg-linear-to-r from-indigo-800 to-indigo-900 dark:text-white dark:hover:bg-linear-to-r dark:hover:from-gray-300 dark:hover:to-gray-300 dark:hover:text-indigo-500 shadow-md shadow-black p-2"
         >
-          Sign in
+          Iniciar sesión
         </button>
       </div>
     </form>

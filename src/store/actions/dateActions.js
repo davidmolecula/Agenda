@@ -107,4 +107,19 @@ export const color=createAction('color',(obj)=>{
     }
 })
 
+export const date_updateTracking = createAsyncThunk('date_updateTracking', async (obj) => {
+    try {
+        const {data}=await axios.post(`${apiUrl}/agenda/tracking-update`,obj)
+        return {
+            success: data.success,
+            tracking: data.tracking,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            tracking:{}
+        };
+    }
+});
+
 export const resetSuccess = createAction("resetSuccess");

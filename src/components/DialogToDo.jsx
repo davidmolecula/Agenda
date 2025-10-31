@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { date_tracking, resetSuccess} from "@/store/actions/dateActions";
+import { date_gettracking, date_tracking, resetSuccess} from "@/store/actions/dateActions";
 import { Checkbox } from "../components/ui/checkbox.jsx"
 
 export function DialogToDo({ initialOpen = false,  title, description, fields, date }) {
@@ -20,11 +20,12 @@ export function DialogToDo({ initialOpen = false,  title, description, fields, d
   const [status, setStatus] = useState("idle"); // Posibles valores: "idle", "saving", "success", "error"
   const [isOpen, setIsOpen] = useState(false); // Controla si el diálogo está abierto o cerrado
   const [formData,setFormData]=useState({
-    meassure:3,
+    meassure:0,
     user: user?.id || null,
     date:date,
     task:"",
     fixed:false,
+    bg:'bg-transparent',
     type:"usuario"
   })
   useEffect(() => {
@@ -68,19 +69,19 @@ const trackingSuccess = success && lastAction === "date_tracking";
   }
 
   const handleChecked = (checked) => {
-
     setFormData({
       ...formData,
-      fixed:checked? 1:2,  
+      fixed:checked? true: false, 
     })
   };
+  console.log('handlechecked fixed', formData)
 
   const handleSaveAgenda = (event) => {
     event.preventDefault();
     // Si hubo un error previo, limpiamos el estado de error
       setStatus("idle");
 
-    if (formData.meassure ) {
+    if (formData.task ) {
       setStatus("saving");
       dispatch(date_tracking({ data: formData }));
     } else {
@@ -88,6 +89,7 @@ const trackingSuccess = success && lastAction === "date_tracking";
       setTimeout(() => setStatus("error"), 1000);
       // Mostrar error si hay campos vacíos
     }
+    if (user.id) dispatch(date_gettracking({ id: user.id, date }));
   };
 
   return (
@@ -118,13 +120,14 @@ const trackingSuccess = success && lastAction === "date_tracking";
                     onChange={handleInput}
                     className="col-span-3 "
                 />
-                <div className="flex gap-3 border border-red-500 w-fit">
+                <div className="flex w-fit">
                 <div className="flex gap-3">
                     <Checkbox
                     id="toggle"
                     onCheckedChange={(checked) =>
-                      handleChecked(checked)}/>
-                    <Label htmlFor="toggle" className="border border-grey-300 w-14">Tarea fija</Label>
+                      handleChecked(checked)}
+                      className="self-center"/>
+                    <Label htmlFor="toggle" className="w-14">Permanente</Label>
                 </div>
                 </div>
             </div>

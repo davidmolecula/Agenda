@@ -120,10 +120,10 @@ const colores = {
                 x: showCalendar ? 0 : 20,  // Se mueve cuando aparece el calendario
               }}
               transition={{ duration: 0.5, ease: "easeInOut" }}  // Animación suave
-              className="px-4 py-2 rounded-md text-indigo-700 hover:text-white duration-100   dark:text-white  dark:hover:text-indigo-200 shadow-md shadow-black  px-3.5 p-2 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 text-white rounded-md focus:outline-none focus:ring focus:ring-blue-300">
+              className="px-4 py-2 rounded-md text-indigo-700 hover:text-white duration-100   dark:text-white  dark:hover:text-indigo-200 shadow-md shadow-black  px-3.5 p-2 text-sm font-semibold focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 text-white rounded-md focus:outline-hidden focus:ring-3 focus:ring-blue-300">
             {date? <div className="p-2 h-16"><span className="capitalize rounded-xl">{format(date,'eeee',{locale: es})}</span>, {format(date, 'PPP', {locale: es})}</div>:<div className="p-2">No hay fechas seleccionadas</div>}
             <div className="flex w-full h-full justify-center gap-10">
-            <div className="flex flex-col gap-3 w-56 h-72 border border-indigo-950 dark:bg-gradient-to-r from-indigo-800 to-indigo-900 justify-center shadow-2xl shadow-black rounded-xl">
+            <div className="flex flex-col gap-3 w-56 h-72 border border-indigo-950 dark:bg-linear-to-r from-indigo-800 to-indigo-900 justify-center shadow-2xl shadow-black rounded-xl">
               <p className="text-center text-xl dark:text-white text-black">Agenda</p>
               <button onClick={sendReminder}>Enviar Recordatorio</button>
 
@@ -137,7 +137,7 @@ const colores = {
                   opacity: 1, 
                 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}  // Animación suave
-                className="px-4 py-2 text-black dark:text-white rounded-md  focus:outline-none focus:ring focus:ring-blue-300"
+                className="px-4 py-2 text-black dark:text-white rounded-md  focus:outline-hidden focus:ring-3 focus:ring-blue-300"
                 onClick={toggleCalendar}>Ver agenda</motion.div>
                 </Button>
               {/* Aca se usa DialogAgregar que es el dialogo especifico para "Agregar" */}

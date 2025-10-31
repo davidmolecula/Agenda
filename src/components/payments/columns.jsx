@@ -42,7 +42,7 @@ export const columns = [
   },
   {
     accessorKey: "importance",
-    header: () => <div className="w-36 !m-0 !p-0 h-10  flex items-center justify-center">Importancia</div>,
+    header: () => <div className="w-36 m-0! p-0! h-10  flex items-center justify-center">Importancia</div>,
     cell: ({ row }) => {
       const importance = row.getValue("importance")
       return <div className="w-36 h-12 flex items-center justify-center   font-medium">{importance}</div>;
@@ -50,7 +50,7 @@ export const columns = [
   },
   {
     accessorKey: "date",
-    header: () => <div className="w-24 h-10 !m-0 !p-0  flex items-center justify-center">Fecha</div>,
+    header: () => <div className="w-24 h-10 m-0! p-0!  flex items-center justify-center">Fecha</div>,
     cell: ({ row }) => {
       const date = row.getValue("date")
       return <div className="w-24 h-12 flex items-center justify-center font-medium">{format(date,'PP',{locale: es})}</div>;

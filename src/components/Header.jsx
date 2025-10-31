@@ -23,7 +23,7 @@ const Header = () => {
     return (
     
     <header className="bg-slate-200 dark:bg-gray-900">
-    <div className="mx-auto flex flex-wrap sm:h-16 max-w-screen-xl p-3  md:items-center gap-8 px-4 sm:px-6 lg:px-8">
+    <div className="mx-auto flex flex-wrap sm:h-16 max-w-(--breakpoint-xl) p-3  md:items-center gap-8 px-4 sm:px-6 lg:px-8">
         <Link className="block text-indigo-600 opacity-0 sm:opacity-100 dark:text-indigo-600" to="/">
         <svg className="h-8" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
