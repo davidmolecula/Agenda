@@ -74,7 +74,7 @@ const trackingSuccess = success && lastAction === "date_tracking";
       fixed:checked? true: false, 
     })
   };
-  console.log('handlechecked fixed', formData)
+
 
   const handleSaveAgenda = (event) => {
     event.preventDefault();

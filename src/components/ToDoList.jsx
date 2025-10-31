@@ -12,7 +12,7 @@ const dispatch=useDispatch()
 const [date, setDate] = useState(new Date());
 const tracking=useSelector(store=>store.dateReducer.tracking)
 
-console.log()
+
 useEffect(() => {
   if (user) {
     dispatch(date_gettracking({ id: user.id, date }));

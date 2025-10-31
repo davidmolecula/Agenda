@@ -99,7 +99,6 @@ export const date_gettracking = createAsyncThunk('date_gettracking', async (obj)
 });
 
 export const color=createAction('color',(obj)=>{
-    console.log(obj)
     const color='bg-red-500'
     console.log(color)
     return {
