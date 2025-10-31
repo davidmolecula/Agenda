@@ -16,7 +16,6 @@ export function Tracking() {
   const agenda=useSelector(store=>store.dateReducer.agenda)
   const feriados=useSelector(store=>store.dateReducer.feriados)
   const tracking=useSelector(store=>store.dateReducer.tracking)
-  console.log(tracking)
   const [date, setDate] = useState(new Date());
   const [filtrado,setFiltrado]=useState("")
   const dispatch=useDispatch()  
