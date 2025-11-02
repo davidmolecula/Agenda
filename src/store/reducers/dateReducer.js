@@ -7,7 +7,7 @@ const initialState = {
     success: false, // Estado para éxito general
     lastAction: null, // Para identificar la acción exitosa
     tracking:[{
-        bg: 'bg-transparent',
+        bg: '',
     }],
     data:[{
     meassure:3,

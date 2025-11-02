@@ -37,18 +37,13 @@ const Header = () => {
         <nav ref={navRef} aria-label="Global" className=" absolute bg-slate-200 dark:bg-gray-900 sm:bg-transparent -top-72 sm:static sm:translate-y-0 w-full left-0 flex flex-col justify-center items-center md:block">
             <ul className="flex sm:flex-row flex-col items-center gap-6 text-sm">
             <li>
-                <Link
-                className="text-blacktransition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                href="/agenda"
-                >
-                Agenda
-                </Link>
+                {user?<LinksHeader text='Agenda' link='/calendario' color='gray-100'/> :null}
             </li>
             <li>
-                <LinksHeader text='Seguimiento' link='/seguimiento' color='gray-100'/>
+                {user?<LinksHeader text='Seguimiento' link='/seguimiento' color='gray-100'/> :null}
             </li>
             <li>
-                <LinksHeader text='Tareas' link='/todo' color='gray-100'/>
+               {user?<LinksHeader text='Tareas' link='/todo' color='gray-100'/>:null} 
             </li>
 
 

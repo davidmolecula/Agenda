@@ -25,7 +25,7 @@ export function DialogToDo({ initialOpen = false,  title, description, fields, d
     date:date,
     task:"",
     fixed:false,
-    bg:'bg-transparent',
+    bg:'',
     type:"usuario"
   })
   useEffect(() => {
@@ -76,41 +76,33 @@ const trackingSuccess = success && lastAction === "date_tracking";
   };
 
 
-  const handleSaveAgenda = (event) => {
+  const handleSaveAgenda = async(event) => {
     event.preventDefault();
     // Si hubo un error previo, limpiamos el estado de error
       setStatus("idle");
 
     if (formData.task ) {
       setStatus("saving");
-      dispatch(date_tracking({ data: formData }));
-    } else {
+      await dispatch(date_tracking({ data: formData }));
+    
+    if (user.id) {
+      await dispatch(date_gettracking({ id: user.id, date }));
+    }
+    setStatus("idle");
+  }else {
       setStatus("saving");
       setTimeout(() => setStatus("error"), 1000);
       // Mostrar error si hay campos vacíos
     }
-    if (user.id) dispatch(date_gettracking({ id: user.id, date }));
   };
 
   return (
     //Este dialog se usa solo en AGREGAR de la AGENDA"
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button className="text-black dark:text-white" variant="outline" onClick={() => setIsOpen(true)}>
-          {title}
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription >
-            {description}
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
+    <div className="flex  border border-white w-full justify-center">
+        <div className="grid gap-4 ">
           {/* Mapear las propiedades del objeto fields */}
           {Object.entries(fields).map(([key,value]) => (
-            <div  key={key} className="grid  grid-cols-4 items-center gap-4">
+            <div  key={key} className="flex justify-between gap-10">
               <Label htmlFor={key} className="flex self-start justify-center pt-3">
                 {value}
               </Label>
@@ -121,29 +113,27 @@ const trackingSuccess = success && lastAction === "date_tracking";
                     className="col-span-3 "
                 />
                 <div className="flex w-fit">
-                <div className="flex gap-3">
+                <div className="flex gap-3 align-center items-center">
                     <Checkbox
                     id="toggle"
                     onCheckedChange={(checked) =>
                       handleChecked(checked)}
                       className="self-center"/>
-                    <Label htmlFor="toggle" className="w-14">Permanente</Label>
+                    <Label htmlFor="toggle" className="w-fit p-2">Permanente</Label>
                 </div>
                 </div>
             </div>
           ))}
         </div>
-        <DialogFooter>
+ 
           <Button className="text-white dark:text-black" type="submit" onClick={handleSaveAgenda} disabled={status === "saving"}>
             {status === "saving" ? "Guardando..." : "Guardar cambios"}
           </Button>
-        </DialogFooter>
 
         {/* Indicador de estado */}
         {status === "error" && (
           <p className="text-red-500 mt-2">There was an error saving your profile. Please try again.</p>
         )}
-      </DialogContent>
-    </Dialog>
+    </div>
   );
 }

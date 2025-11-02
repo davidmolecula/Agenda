@@ -17,7 +17,7 @@ useEffect(() => {
   if (user) {
     dispatch(date_gettracking({ id: user.id, date }));
   }
-}, [user, dispatch]);
+}, [user, dispatch,date]);
 
 useEffect(() => {
   const trackingDateNormalized = (tracking || []).map(item => ({
@@ -62,15 +62,13 @@ const handleCompleted2=(indexToChange)=>{
     setTaskOfDay(newData2);
     dispatch(date_updateTracking({filter:newData2[indexToChange].task,fields:{completed:newData2[indexToChange].completed, bg:newData2[indexToChange].bg, checked:newData2[indexToChange].checked}}))
 }
-
   return (
     <div className="dark:bg-gray-900 flex flex-col border border-green-500 justify-center  items-center">
     <h1 className="text-9xl justify-self-center">Tareas</h1>
     <div className="w-8/12 grid grid-flow-row-dense grid-cols-3 grid-rows-3 rounded-xl ">
     <div className="col-1  rounded-xl col-span-2 text-white "><h2 className="text-5xl text-center">Tarea permanente</h2>
     {taskFixed.map((taskFixed, index)=>taskFixed.fixed?(
-      
-      <div className={`flex justify-between  ${taskFixed.bg} p-2 m-1 rounded-xl`}  key={index}><div>{taskFixed.task}</div><Button  className={`rounded-3xl w-1 h-7 ${taskFixed.bg} text-green-300`} onClick={()=>handleCompleted(index)}>{taskFixed.checked}</Button></div>
+      <div className={`flex justify-between  ${taskFixed.bg} p-2 m-1 rounded-xl`}  key={index}><div>{taskFixed.task}</div><Button  className={`rounded-3xl w-1 h-7 bg-black/75  ${taskFixed.bg} text-white`} onClick={()=>handleCompleted(index)}>{taskFixed.checked}</Button></div>
       ):(<></>)
   )}
   </div>

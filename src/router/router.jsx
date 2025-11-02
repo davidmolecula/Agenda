@@ -58,7 +58,9 @@ const router=createBrowserRouter([
             {
                 path:'/todo',
                 element:
-                <Todo></Todo>
+                <ProtectedRoute path='/seguimiento'>
+                    <Todo></Todo> 
+                </ProtectedRoute> 
             }
         ]
     }
