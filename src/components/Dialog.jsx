@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { date_agenda, resetSuccess} from "@/store/actions/dateActions";
+import { date_agenda, date_mail, resetSuccess} from "@/store/actions/dateActions";
 import { Checkbox } from "@/components/ui/checkbox"
 
 export function DialogAgregar({ initialOpen = false,  title, description, fields, date }) {
@@ -92,6 +92,12 @@ export function DialogAgregar({ initialOpen = false,  title, description, fields
     if (formData.name && formData.description && formData.importance) {
       setStatus("saving");
       dispatch(date_agenda({ data: formData }));
+      const mail={
+            to: "davidmolecula@correo.com",
+            subject: "Nueva tarea creada",
+            html: "<h2>Hola!</h2><p>Se creó una nueva tarea en tu agenda.</p>",
+        }
+        dispatch(date_mail(mail))
     } else {
       setStatus("saving");
       setTimeout(() => setStatus("error"), 1000);

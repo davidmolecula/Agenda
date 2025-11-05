@@ -1,6 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { date_picked, date_agenda, resetSuccess, date_getagenda, date_delete, date_delete_filtered, date_tracking, date_gettracking, color, date_updateTracking} from "../actions/dateActions";
-
+import { date_picked, date_agenda, resetSuccess, date_getagenda, date_delete, date_delete_filtered, date_tracking, date_gettracking, color, date_updateTracking, date_mail} from "../actions/dateActions";
 const initialState = {
     date: "",
     agenda: [{ name: "", description: "", importance: "" }], // Estado inicial como arreglo de objetos
@@ -99,6 +98,13 @@ const dateReducer = createReducer(initialState, (builder) =>
                 ...state,
                 success: action.payload.success,
                 tracking: Array.isArray(action.payload.tracking) ? action.payload.tracking : [action.payload.tracking]
+            }
+        })
+        .addCase(date_mail.fulfilled, (state, action) => {
+            return {
+                ...state,
+                success: action.payload.success,
+                fef: action.payload.ref
             }
         })
 )

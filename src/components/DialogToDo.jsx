@@ -75,7 +75,6 @@ const trackingSuccess = success && lastAction === "date_tracking";
     })
   };
 
-
   const handleSaveAgenda = async(event) => {
     event.preventDefault();
     // Si hubo un error previo, limpiamos el estado de error

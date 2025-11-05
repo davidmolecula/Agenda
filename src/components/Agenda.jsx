@@ -1,11 +1,12 @@
 "use client"
 
 import * as React from "react"
+import axios from "axios";
 import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar"
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { date_picked, date_getagenda, date_delete, date_delete_filtered} from "@/store/actions/dateActions";
+import { date_picked, date_getagenda, date_delete, date_delete_filtered, date_mail} from "@/store/actions/dateActions";
 import { es } from "date-fns/locale/es";
 import { format } from "date-fns";
 import {DialogAgregar} from "@/components/Dialog.jsx";
@@ -25,6 +26,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AppSidebar } from "./app-sidebar.jsx";
+import apiUrl from "@/api.js";
+
+
+
 export function Agenda() {
   const user=useSelector(store=> store.userReducer.user)
   const agenda=useSelector(store=>store.dateReducer.agenda)
@@ -53,6 +58,7 @@ const colores = {
   'bg-blue-400': '#60a5fa',     // Evento neutro
   'bg-green-400': '#4ade80',    // Evento positivo
 };
+
 
   const toggleCalendar = () => {
     setShowCalendar(!showCalendar)
@@ -125,10 +131,6 @@ const colores = {
             <div className="flex w-full h-full justify-center gap-10">
             <div className="flex flex-col gap-3 w-56 h-72 border border-indigo-950 dark:bg-linear-to-r from-indigo-800 to-indigo-900 justify-center shadow-2xl shadow-black rounded-xl">
               <p className="text-center text-xl dark:text-white text-black">Agenda</p>
-              <button onClick={sendReminder}>Enviar Recordatorio</button>
-
-              
-  
                 <Button variant="outline"  onClick={toggleCalendar} >
                   
                   <motion.div

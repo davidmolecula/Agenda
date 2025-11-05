@@ -120,4 +120,19 @@ export const date_updateTracking = createAsyncThunk('date_updateTracking', async
     }
 });
 
+export const date_mail = createAsyncThunk('date_mail', async (obj) => {
+    try {
+        const {data}=await axios.post(`${apiUrl}/agenda/send-email`,obj)
+        return {
+            success: data.success,
+            ref: data.referenceId,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            ref:{}
+        };
+    }
+});
+
 export const resetSuccess = createAction("resetSuccess");
