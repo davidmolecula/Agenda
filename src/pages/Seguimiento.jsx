@@ -17,6 +17,7 @@ export function Tracking() {
   const feriados=useSelector(store=>store.dateReducer.feriados)
   const tracking=useSelector(store=>store.dateReducer.tracking)
   const [date, setDate] = useState(new Date());
+  const [refresh, setRefresh] = useState(false);
   const [filtrado,setFiltrado]=useState("")
   const dispatch=useDispatch()  
   const colors = [
@@ -36,31 +37,18 @@ const colores = {
   'bg-green-400': '#4ade80',    // Evento positivo
 };
 
-const handleSelect = (newDate) => {
-  if (!newDate) return;
-  if (date && newDate.getTime() === date.getTime()) return; // evita despachos si es la misma fecha
-  setDate(newDate);
-};  
-
-    useEffect(() => {
-  if (!date || !user?.id) return;
-  // dispatch solo si date cambió
-  dispatch(date_gettracking({ id: user.id, date }));
-}, []);
-    useEffect(() => {
-  if (!date || !user?.id) return;
-
-  // dispatch solo si date cambió
-  dispatch(date_picked({ date: date.toString() }));
-}, [date, user?.id]);
-
-    
     useEffect(() => {
       // Despacha la acción para obtener la agenda desde la API al cargar el componente
       dispatch(date_delete_filtered(filtrado))
       dispatch(date_getagenda({id:user.id}));
       dispatch(date_gettracking({id:user.id,date:date}));
-    }, [dispatch]);
+    }, [dispatch, refresh]);
+
+
+const handleSelect = (newDate) => {
+  if (!newDate) return;
+  setDate(newDate);
+};  
 
     const colorArrays = colors.reduce((acc, colorClass) => {
       acc[colorClass] = [
@@ -94,7 +82,7 @@ let meassureTotal = dateFound.reduce((accumulator, currentValue) => {
   return accumulator + (currentValue.meassure || 0);
 }, 0);
 
-const chartData=tracking.map(tracking=> ({date:tracking.date, dato2: tracking.meassure, dato3: 1  }))
+const chartData=tracking.filter((tracking)=>tracking.meassure).map(tracking=> ({date:tracking.date, dato2: tracking.meassure, dato3: 1  }))
 
 
   return (
@@ -116,7 +104,8 @@ const chartData=tracking.map(tracking=> ({date:tracking.date, dato2: tracking.me
                   <div className="flex justify-center">
                     <DialogTracking  title="Seguimiento de estudio" fields={{
                                                       meassure:"Horas",
-                                                      }} date={date}>
+                                                      }} date={date}
+                                                      onSave={() => setRefresh(prev => !prev)} >
                                               
                                   </DialogTracking>
       

@@ -43,7 +43,7 @@ const Header = () => {
                 {user?<LinksHeader text='Seguimiento' link='/seguimiento' color='gray-100'/> :null}
             </li>
             <li>
-               {user?<LinksHeader text='Tareas' link='/todo' color='gray-100'/>:null} 
+            {user?<LinksHeader text='Tareas' link='/todo' color='gray-100'/>:null} 
             </li>
 
 
@@ -80,7 +80,7 @@ const Header = () => {
     </div>
     
 </header>
-  )
+)
 }
 
 export default Header

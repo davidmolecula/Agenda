@@ -35,7 +35,6 @@ const chartConfig = {
 
 export function ChartBarInteractive({chartData, title, description}) {
   const [activeChart, setActiveChart] =React.useState("dato2")
-
   const total = React.useMemo(
     () => {
       if (!chartData || chartData.length === 0) {

@@ -7,6 +7,7 @@ const initialState = {
     lastAction: null, // Para identificar la acción exitosa
     tracking:[{
         bg: '',
+        checked:'x'
     }],
     data:[{
     meassure:3,

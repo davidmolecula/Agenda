@@ -11,7 +11,7 @@ const Register = () => {
     password:""
   })
   const handleInput=(event)=>{
-    console.log(event.target.value)
+
     setFormData({
       ...formData,
       [event.target.name]:event.target.value
@@ -23,7 +23,6 @@ const Register = () => {
       dispatch(user_signup({
         data:formData
       }))
-      console.log(formData)
     }catch(error){
       console.log(error)
     }

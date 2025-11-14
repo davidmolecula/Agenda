@@ -1,12 +1,12 @@
 "use client"
 
 import * as React from "react"
-import axios from "axios";
 import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar"
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { date_picked, date_getagenda, date_delete, date_delete_filtered, date_mail} from "@/store/actions/dateActions";
+import { date_picked, date_getagenda, date_delete, date_delete_filtered, date_gettracking} from "@/store/actions/dateActions";
+import {DialogTracking} from "@/components/DialogTracking.jsx";
 import { es } from "date-fns/locale/es";
 import { format } from "date-fns";
 import {DialogAgregar} from "@/components/Dialog.jsx";
@@ -14,6 +14,10 @@ import DataTable from "./payments/dataTable.jsx";
 import { columns } from "./payments/columns.jsx";
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
+import ExitAnimation from './ui/motion-exit.jsx'
+import {ChartRadialShape} from "../components/RadialChart.jsx"
+import {ChartBarInteractive} from '../components/BarChart.jsx'
+
 import {
   Dialog,
   DialogContent,
@@ -25,8 +29,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AppSidebar } from "./app-sidebar.jsx";
-import apiUrl from "@/api.js";
+
 
 
 
@@ -34,6 +37,7 @@ export function Agenda() {
   const user=useSelector(store=> store.userReducer.user)
   const agenda=useSelector(store=>store.dateReducer.agenda)
   const feriados=useSelector(store=>store.dateReducer.feriados)
+  const tracking=useSelector(store=>store.dateReducer.tracking)
 
   const agendaYFeriados=[...agenda,...feriados??[]]
   const [date, setDate] = useState(new Date());
@@ -41,6 +45,7 @@ export function Agenda() {
   const [showCalendar, setShowCalendar] = useState(false);
   const [filtrado,setFiltrado]=useState("")
   const [nameDelete,setNameDelete]= useState("")
+  const [refresh, setRefresh] = useState(false);
   const dispatch=useDispatch()  
   const colors = [
     'bg-red-500',      // Alerta
@@ -65,36 +70,20 @@ const colores = {
   };
 
   const handleSelect=(newDate)=>{
+    if (!newDate) return;
     setDate(newDate)
     dispatch(date_picked({
       date:date? date.toString(): null
     }))
   }
 
-  const sendReminder = async () => {
-    await fetch("http://localhost:5000/send-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        to: "destinatario@gmail.com",
-        subject: "Tu recordatorio",
-        message: "Tienes un evento programado para mañana a las 10 AM.",
-      }),
-    });
-  };
-  
     useEffect(()=>{
       handleSelect(date)
-    },[])
-
-    useEffect(()=>{
       dispatch(date_delete_filtered(filtrado))
-    },[])
-    
-    useEffect(() => {
-      // Despacha la acción para obtener la agenda desde la API al cargar el componente
       dispatch(date_getagenda({id:user?.id}));
-    }, [dispatch]);
+      dispatch(date_gettracking({id:user.id,date:date}));
+    },[dispatch, refresh])
+    
 
     const colorArrays = colors.reduce((acc, colorClass) => {
       acc[colorClass] = [
@@ -115,9 +104,22 @@ const colores = {
       };
       return acc;
     }, {});
+    const trackingDateNormalized = (tracking||[]).map(item => ({
+  ...item,
+  date: new Date(item.date) 
+}));
+
+const dateFound=trackingDateNormalized.filter(tracking=>(tracking.date.getDate()==date.getDate()&&tracking.date.getMonth()==date.getMonth()&&tracking.date.getFullYear()==date.getFullYear())?tracking:false)
+
+let meassureTotal = dateFound.reduce((accumulator, currentValue) => {
+  return accumulator + (currentValue.meassure || 0);
+}, 0);
+
+const chartData=tracking.filter((tracking)=>tracking.meassure).map(tracking=> ({date:tracking.date, dato2: tracking.meassure, dato3: 1  }))
+
   return (
     <>
-    <div className="flex dark w-full space-x-12">
+    <div className="flex flex-col md:flex-row flex-wrap border border-emerald-300 dark w-full space-x-12">
 
           <motion.div
               initial={{ opacity: 1, x: 20 }}  // Inicialmente está en su lugar, visible
@@ -126,7 +128,7 @@ const colores = {
                 x: showCalendar ? 0 : 20,  // Se mueve cuando aparece el calendario
               }}
               transition={{ duration: 0.5, ease: "easeInOut" }}  // Animación suave
-              className="px-4 py-2 rounded-md text-indigo-700 hover:text-white duration-100   dark:text-white  dark:hover:text-indigo-200 shadow-md shadow-black  px-3.5 p-2 text-sm font-semibold focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 text-white rounded-md focus:outline-hidden focus:ring-3 focus:ring-blue-300">
+              className="px-4 py-2 border border-red-500 rounded-md text-indigo-700 hover:text-white duration-100 md:mt-4 dark:text-white  dark:hover:text-indigo-200 shadow-md shadow-black  px-3.5 p-2 text-sm font-semibold focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 text-white rounded-md focus:outline-hidden focus:ring-3 focus:ring-blue-300">
             {date? <div className="p-2 h-16"><span className="capitalize rounded-xl">{format(date,'eeee',{locale: es})}</span>, {format(date, 'PPP', {locale: es})}</div>:<div className="p-2">No hay fechas seleccionadas</div>}
             <div className="flex w-full h-full justify-center gap-10">
             <div className="flex flex-col gap-3 w-56 h-72 border border-indigo-950 dark:bg-linear-to-r from-indigo-800 to-indigo-900 justify-center shadow-2xl shadow-black rounded-xl">
@@ -150,7 +152,7 @@ const colores = {
                                   }} date={date}>
                           
               </DialogAgregar>
-            <Dialog >
+              <Dialog>
               <DialogTrigger asChild>
                 <Button variant="outline" className="text-black dark:text-white" onClick={() => setIsOpen(true)}>
                   Modificar
@@ -182,9 +184,8 @@ const colores = {
                     </Button>
                   </DialogFooter>
                 </DialogContent>
-            </Dialog>
-
-          <Dialog>
+              </Dialog>
+              <Dialog>
             <DialogTrigger asChild>
               <Button variant="outline" className="text-black dark:text-white" onClick={() => setIsOpen(true)}>
                 Eliminar
@@ -251,19 +252,18 @@ const colores = {
                 <Button onClick={() => setIsOpen(false)}>Cerrar</Button>
               </DialogFooter>
             </DialogContent>
-          </Dialog>
-
+              </Dialog>
               </div>
             </div>
           
           </motion.div>
           
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 1, y: -10 }}
             animate={{ opacity: showCalendar ? 1 : 0, y: showCalendar ? 0 : -10 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 1.2, ease: "easeInOut" }}
-            className="mt-4">
+            className="mt-4 ">
               {showCalendar && (
               <Calendar
                 captionLayout="dropdown-buttons"
@@ -274,7 +274,7 @@ const colores = {
                 selected={date}
                 onSelect={handleSelect}
                 locale={es}
-                className="rounded-md border"
+                className="rounded-md border mt-4"
                 modifiers={colorArrays} // Usamos los arrays de fechas por color como modificadores
                 modifiersStyles={modifiersStyles}
               /> )}
@@ -288,6 +288,36 @@ const colores = {
               {showCalendar && (
           <DataTable data={agendaYFeriados} date={date} columns={columns} />)}
           </motion.div>
+          <div className="flex justify-center">
+                              <DialogTracking  title="Seguimiento de estudio" fields={{
+                                                                meassure:"Horas",
+                                                                }} date={date}
+                                                                onSave={() => setRefresh(prev => !prev)} >
+                                                        
+                                            </DialogTracking>
+                
+                  <ChartRadialShape  chartData={[{
+                                            dato: "Nombre",
+                                            meassure: meassureTotal,
+                                            fill: "var(--chart-1)",
+                                            
+                                                        endAngle:meassureTotal*360/8,
+                                                        innerRadius:90,
+                                                        outerRadius:160,
+                                                        cardTitle:`Horas de estudio del día ${date.getDate()}/${date.getMonth()}`,
+                                                        cardDescription:"Medidas en horas (máximo 8)"
+                                            }]}
+                                            chartConfig = {{
+                                                  dato: {
+                                                    label: "Dato",
+                                                  },
+                                                  dato2: {
+                                                    label: "Dato2",
+                                                    color: "var(--chart-2)",
+                                                  }}}></ChartRadialShape>
+          </div>
+          <ChartBarInteractive chartData={chartData} title='Titulo' description='Descripcion'></ChartBarInteractive>
+
     </div>
     </>
   )

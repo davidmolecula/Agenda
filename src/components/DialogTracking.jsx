@@ -15,11 +15,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { date_tracking, resetSuccess} from "@/store/actions/dateActions";
 import { Checkbox } from "@/components/ui/checkbox"
 
-export function DialogTracking({ initialOpen = false,  title, description, fields, date }) {
+export function DialogTracking({ initialOpen = false,  title, description, fields, date, onSave}) {
   const user=useSelector(store=> store.userReducer.user)
   const [status, setStatus] = useState("idle"); // Posibles valores: "idle", "saving", "success", "error"
   const [isOpen, setIsOpen] = useState(false); // Controla si el diálogo está abierto o cerrado
-  const [colorSelected,setColorSelected]=useState("")
   const [formData,setFormData]=useState({
   })
   useEffect(() => {
@@ -29,25 +28,10 @@ export function DialogTracking({ initialOpen = false,  title, description, field
         user: user.id, // Actualiza el campo user
       }));
     }
-  }, [user]);
-  const colors = [
-  'bg-red-500',      // Alerta
-  'bg-yellow-400',   // Fecha importante
-  'bg-indigo-500',   // Base principal
-  'bg-purple-400',   // Evento especial
-  'bg-blue-400',     // Evento neutro
-  'bg-green-400',    // Evento positivo
-];
-  const colorMapping = {
-    'bg-red-500': 'bg-red-700',      // Alerta
-    'bg-yellow-400': 'bg-yellow-600',// Fecha importante
-    'bg-indigo-500': 'bg-indigo-700',// Base principal
-    'bg-purple-400': 'bg-purple-600',// Evento especial
-    'bg-blue-400': 'bg-blue-600',    // Evento neutro
-    'bg-green-400': 'bg-green-600',  // Evento positivo
-  };
+  }, [user, status]);
+  
   const dispatch=useDispatch()
-const { success, lastAction } = useSelector((store) => store.dateReducer);
+  const { success, lastAction } = useSelector((store) => store.dateReducer);
   const trackingSuccess = success && lastAction === "date_tracking";
 
   const handleInput=(event)=>{
@@ -85,6 +69,7 @@ const { success, lastAction } = useSelector((store) => store.dateReducer);
     if (formData.meassure ) {
       setStatus("saving");
       dispatch(date_tracking({ data: formData }));
+      if (onSave) onSave(); 
     } else {
       setStatus("saving");
       setTimeout(() => setStatus("error"), 1000);
@@ -92,30 +77,6 @@ const { success, lastAction } = useSelector((store) => store.dateReducer);
     }
   };
 
-  const handleChecked = (event) => {
-    const selectedColor = event.target.getAttribute("data-name");
-    setColorSelected((prevColor) => 
-      prevColor === selectedColor ? "" : selectedColor
-    );
-
-    setFormData({
-      ...formData,
-      color:selectedColor
-    });
-  };
-
-  useEffect(() => {
-    if (!isOpen) {
-      setFormData({
-      meassure:0,
-      user: user?.id || null,
-      date:date,
-      type:"usuario"
-      });
-      setTimeout(() => setStatus("idle"), 2000);
-      
-    }
-  }, [isOpen,status]);
 
   return (
     //Este dialog se usa solo en AGREGAR de la AGENDA"
@@ -153,8 +114,6 @@ const { success, lastAction } = useSelector((store) => store.dateReducer);
                               <Checkbox
                                 key={color}
                                 data-name={color}
-                                onClick={handleChecked}
-                                checked={colorSelected === color}
                                 className={`flex items-center rounded-lg justify-center w-8 h-8  ${
                                   colorSelected === color ? colorMapping[color] : color
                                 }` }
@@ -185,7 +144,7 @@ const { success, lastAction } = useSelector((store) => store.dateReducer);
 
         {/* Indicador de estado */}
         {status === "error" && (
-          <p className="text-red-500 mt-2">There was an error saving your profile. Please try again.</p>
+          <p className="text-red-500 mt-2">Hubo un error agregando el seguimiento por favor intentar nuevamente</p>
         )}
       </DialogContent>
     </Dialog>

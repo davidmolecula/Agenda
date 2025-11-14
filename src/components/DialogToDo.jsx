@@ -26,6 +26,7 @@ export function DialogToDo({ initialOpen = false,  title, description, fields, d
     task:"",
     fixed:false,
     bg:'',
+    checked:'x',
     type:"usuario"
   })
   useEffect(() => {

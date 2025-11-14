@@ -38,9 +38,9 @@ const handleCompleted=(indexToChange)=>{
       index === indexToChange
         ? {
             ...item,
-            bg: item.bg === "bg-linear-to-r from-indigo-500 to-green-900" ? "bg-linear-to-r from-red-500 to-red-900" : "bg-linear-to-r from-indigo-500 to-green-900",
+            bg: item.bg === "bg-linear-to-r from-green-500/75 via-green-900 to-emerald-950" ? "bg-linear-to-r from-red-500 to-red-900" : "bg-linear-to-r from-green-500/75 via-green-900 to-emerald-950",
             completed: !item.completed,
-            checked:item.checked==="x"? "z":"x"
+            checked:item.checked==="✓"? "x":"✓"
           }
         : item
     );
@@ -53,9 +53,9 @@ const handleCompleted2=(indexToChange)=>{
       index === indexToChange
         ? {
             ...item,
-            bg: item.bg === "bg-linear-to-r from-green-500 to-green-900" ? "bg-linear-to-r from-red-500 to-red-900" : "bg-linear-to-r from-green-500 to-green-900",
+            bg: item.bg === "bg-linear-to-r from-emerald-300/75 via-green-900 to-transparent" ? "bg-linear-to-r from-red-500 transparent" : "bg-linear-to-r from-emerald-300/75 via-green-900 to-transparent",
             completed:!item.completed,
-            checked:item.checked==="z"? "x":"z"
+            checked:item.checked==="✓"? "x":"✓"
           }
         : item
     );
@@ -68,12 +68,12 @@ const handleCompleted2=(indexToChange)=>{
     <div className="w-8/12 grid grid-flow-row-dense grid-cols-3 grid-rows-3 rounded-xl ">
     <div className="col-1  rounded-xl col-span-2 text-white "><h2 className="text-5xl text-center">Tarea permanente</h2>
     {taskFixed.map((taskFixed, index)=>taskFixed.fixed?(
-      <div className={`flex justify-between  ${taskFixed.bg} p-2 m-1 rounded-xl`}  key={index}><div>{taskFixed.task}</div><Button  className={`rounded-3xl w-1 h-7 bg-black/75  ${taskFixed.bg} text-white`} onClick={()=>handleCompleted(index)}>{taskFixed.checked}</Button></div>
+      <div className={`flex justify-between  ${taskFixed.bg} p-2 m-1 rounded-xl`}  key={index}><div>{taskFixed.task}</div><Button variant="ghost" className={`rounded-3xl w-1 h-7 bg-black/75 !text-white ${taskFixed.bg} `} onClick={()=>handleCompleted(index)}>{taskFixed.checked}</Button></div>
       ):(<></>)
   )}
   </div>
   <div className="col-3 align-center  rounded-xl text-white "><h2 className="text-5xl text-center ">Tarea del día</h2>
-  {taskOfDay.map((taskOfDay, index)=>taskOfDay.fixed?(<></>):(<div className={`flex justify-between col-2  rounded-xl col-span-1 text-white ${taskOfDay.bg} p-2`}  key={index}><div>{taskOfDay.task}</div><Button  className="rounded-3xl w-1 h-7 bg-green-700/75 text-green-300" onClick={()=>handleCompleted2(index)}>{taskOfDay.checked}</Button></div>)
+  {taskOfDay.map((taskOfDay, index)=>taskOfDay.fixed?(<></>):(<div className={`flex justify-between col-2  rounded-xl col-span-1 text-white ${taskOfDay.bg} p-2`}  key={index}><div>{taskOfDay.task}</div><Button  className="rounded-3xl w-1 h-7 bg-green-700/75 text-white" onClick={()=>handleCompleted2(index)}>{taskOfDay.checked}</Button></div>)
   )}
     </div>
     </div>
