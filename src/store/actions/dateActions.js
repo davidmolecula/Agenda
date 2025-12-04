@@ -2,8 +2,6 @@ import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import apiUrl from "@/api.js";
 
-
-
 export const date_picked=createAction('date_picked',(obj)=>{
     const date=obj;
     return {
@@ -98,6 +96,38 @@ export const date_gettracking = createAsyncThunk('date_gettracking', async (obj)
     }
 });
 
+export const date_task = createAsyncThunk('date_task', async (dataTask) => {
+    try {
+
+        const {data}=await axios.post(`${apiUrl}/auth/task`, dataTask.data)
+
+        return {
+            success: data.success,
+            task: data.response.task,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            task:{}
+        };
+    }
+});
+
+export const date_getTask = createAsyncThunk('date_gettask', async (obj) => {
+    try {
+        const {data}=await axios.post(`${apiUrl}/agenda/task`,obj)
+        return {
+            success: data.success,
+            task: data.task,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            tracking:[]
+        };
+    }
+});
+
 export const color=createAction('color',(obj)=>{
     const color='bg-red-500'
     return {
@@ -105,17 +135,18 @@ export const color=createAction('color',(obj)=>{
     }
 })
 
-export const date_updateTracking = createAsyncThunk('date_updateTracking', async (obj) => {
+export const date_updateTask= createAsyncThunk('date_updateTask', async (obj) => {
     try {
-        const {data}=await axios.post(`${apiUrl}/agenda/tracking-update`,obj)
+        const {data}=await axios.post(`${apiUrl}/agenda/task-update`,obj)
+        console.log("aca llego", obj)
         return {
             success: data.success,
-            tracking: data.tracking,
+            task: data.task,
         };
     } catch (error) {
         return {
             success: false,
-            tracking:{}
+            task:{}
         };
     }
 });

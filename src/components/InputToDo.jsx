@@ -1,26 +1,19 @@
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { date_gettracking, date_tracking, resetSuccess} from "@/store/actions/dateActions";
-import { Checkbox } from "../components/ui/checkbox.jsx"
+import { date_getTask, date_task, resetSuccess} from "@/store/actions/dateActions";
+import { Checkbox } from "./ui/checkbox.jsx"
+import useEffectRepeated from "./ui/useEffectRepeated.jsx"
 
-export function DialogToDo({ initialOpen = false,  title, description, fields, date }) {
+export function InputToDo({ fields, date }) {
   const user=useSelector(store=> store.userReducer.user)
+  const dispatch=useDispatch()
   const [status, setStatus] = useState("idle"); // Posibles valores: "idle", "saving", "success", "error"
   const [isOpen, setIsOpen] = useState(false); // Controla si el diálogo está abierto o cerrado
   const [formData,setFormData]=useState({
-    meassure:0,
+
     user: user?.id || null,
     date:date,
     task:"",
@@ -29,34 +22,6 @@ export function DialogToDo({ initialOpen = false,  title, description, fields, d
     checked:'x',
     type:"usuario"
   })
-  useEffect(() => {
-    if (user?.id) {
-      setFormData((prevData) => ({
-        ...prevData,
-        user: user.id, // Actualiza el campo user
-      }));
-    }
-  }, [user]);
-
-const dispatch=useDispatch()
-const { success, lastAction } = useSelector((store) => store.dateReducer);
-const trackingSuccess = success && lastAction === "date_tracking";
-
-  useEffect(() => {
-      if (trackingSuccess) {
-        setStatus("saving");
-        setTimeout(() => setStatus("success"), 500);
-        setTimeout(() => {
-          setIsOpen(false); // Cierra el diálogo
-          setStatus("idle");
-          dispatch(resetSuccess()); // Limpia el estado global
-        }, 500);
-      } else if (lastAction === "date_tracking" && !success) {
-        setStatus("error");
-        setTimeout(() => setStatus("idle"), 500);
-        dispatch(resetSuccess());
-      }
-    }, [lastAction, success, dispatch]);
 
   const handleInput=(event)=>{
     const { name, value } = event.target; 
@@ -76,17 +41,16 @@ const trackingSuccess = success && lastAction === "date_tracking";
     })
   };
 
-  const handleSaveAgenda = async(event) => {
+  const handleSaveTask = async(event) => {
     event.preventDefault();
     // Si hubo un error previo, limpiamos el estado de error
       setStatus("idle");
-
     if (formData.task ) {
       setStatus("saving");
-      await dispatch(date_tracking({ data: formData }));
+      await dispatch(date_task({ data: formData }));
     
     if (user.id) {
-      await dispatch(date_gettracking({ id: user.id, date }));
+      await dispatch(date_getTask({ id: user.id, date }));
     }
     setStatus("idle");
   }else {
@@ -97,8 +61,7 @@ const trackingSuccess = success && lastAction === "date_tracking";
   };
 
   return (
-    //Este dialog se usa solo en AGREGAR de la AGENDA"
-    <div className="flex  border border-white w-full justify-center">
+    <div className="flex dark:border-red-500 w-full justify-center">
         <div className="grid gap-4 ">
           {/* Mapear las propiedades del objeto fields */}
           {Object.entries(fields).map(([key,value]) => (
@@ -126,7 +89,7 @@ const trackingSuccess = success && lastAction === "date_tracking";
           ))}
         </div>
  
-          <Button className="text-white dark:text-black" type="submit" onClick={handleSaveAgenda} disabled={status === "saving"}>
+          <Button className="text-white dark:text-black" type="submit" onClick={handleSaveTask} disabled={status === "saving"}>
             {status === "saving" ? "Guardando..." : "Guardar cambios"}
           </Button>
 

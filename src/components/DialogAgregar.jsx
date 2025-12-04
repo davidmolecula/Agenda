@@ -12,14 +12,22 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { date_tracking, resetSuccess} from "@/store/actions/dateActions";
+import { date_agenda, date_mail, resetSuccess} from "@/store/actions/dateActions";
 import { Checkbox } from "@/components/ui/checkbox"
 
-export function DialogTracking({ initialOpen = false,  title, description, fields, date, onSave}) {
+export function DialogAgregar({ initialOpen = false,  title, description, fields, date, onSave }) {
   const user=useSelector(store=> store.userReducer.user)
   const [status, setStatus] = useState("idle"); // Posibles valores: "idle", "saving", "success", "error"
   const [isOpen, setIsOpen] = useState(false); // Controla si el diálogo está abierto o cerrado
+  const [colorSelected,setColorSelected]=useState("")
   const [formData,setFormData]=useState({
+    name:"",
+    description:"",
+    importance:"",
+    date:{},
+    color:"bg-indigo-500",
+    user:user?.id,
+    type:"usuario"
   })
   useEffect(() => {
     if (user?.id) {
@@ -28,11 +36,26 @@ export function DialogTracking({ initialOpen = false,  title, description, field
         user: user.id, // Actualiza el campo user
       }));
     }
-  }, [user, status]);
-  
+  }, [user]);
+  const colors = [
+  'bg-red-500',      // Alerta
+  'bg-yellow-400',   // Fecha importante
+  'bg-indigo-500',   // Base principal
+  'bg-purple-400',   // Evento especial
+  'bg-blue-400',     // Evento neutro
+  'bg-green-400',    // Evento positivo
+];
+  const colorMapping = {
+    'bg-red-500': 'bg-red-700',      // Alerta
+    'bg-yellow-400': 'bg-yellow-600',// Fecha importante
+    'bg-indigo-500': 'bg-indigo-700',// Base principal
+    'bg-purple-400': 'bg-purple-600',// Evento especial
+    'bg-blue-400': 'bg-blue-600',    // Evento neutro
+    'bg-green-400': 'bg-green-600',  // Evento positivo
+  };
   const dispatch=useDispatch()
   const { success, lastAction } = useSelector((store) => store.dateReducer);
-  const trackingSuccess = success && lastAction === "date_tracking";
+  const agendaSuccess = success && lastAction === "date_agenda";
 
   const handleInput=(event)=>{
     const { name, value } = event.target; 
@@ -40,36 +63,42 @@ export function DialogTracking({ initialOpen = false,  title, description, field
       ...formData,
       [name]:value,
       date:date,
-      user: user.id,
+      color:colorSelected,
+      user: user?.id,
       type:"usuario"
     })
   }
 
   useEffect(() => {
-      if (trackingSuccess) {
-        setStatus("saving");
-        setTimeout(() => setStatus("success"), 500);
-        setTimeout(() => {
-          setIsOpen(false); // Cierra el diálogo
-          setStatus("idle");
-          dispatch(resetSuccess()); // Limpia el estado global
-        }, 500);
-      } else if (lastAction === "date_tracking" && !success) {
-        setStatus("error");
-        setTimeout(() => setStatus("idle"), 500);
-        dispatch(resetSuccess());
-      }
-    }, [lastAction, success, dispatch]);
+    if (agendaSuccess) {
+      setStatus("saving");
+      setTimeout(() => setStatus("success"), 500);
+      setTimeout(() => {
+        setIsOpen(false); // Cierra el diálogo
+        setStatus("idle");
+        dispatch(resetSuccess()); // Limpia el estado global
+      }, 500);
+    } else if (lastAction === "date_agenda" && !success) {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 500);
+      dispatch(resetSuccess());
+    }
+  }, [lastAction, success, dispatch]);
 
   const handleSaveAgenda = (event) => {
     event.preventDefault();
     // Si hubo un error previo, limpiamos el estado de error
       setStatus("idle");
-
-    if (formData.meassure ) {
+    if (formData.name && formData.description && formData.importance) {
       setStatus("saving");
-      dispatch(date_tracking({ data: formData }));
+      dispatch(date_agenda({ data: formData }));
       if (onSave) onSave(); 
+      const mail={
+            to: "davidmolecula@correo.com",
+            subject: "Nueva tarea creada",
+            html: "<h2>Hola!</h2><p>Se creó una nueva tarea en tu agenda.</p>",
+        }
+        dispatch(date_mail(mail))
     } else {
       setStatus("saving");
       setTimeout(() => setStatus("error"), 1000);
@@ -77,12 +106,36 @@ export function DialogTracking({ initialOpen = false,  title, description, field
     }
   };
 
+  const handleChecked = (event) => {
+    const selectedColor = event.target.getAttribute("data-name");
+    setColorSelected((prevColor) => 
+      prevColor === selectedColor ? "" : selectedColor
+    );
+
+    setFormData({
+      ...formData,
+      color:selectedColor
+    });
+  };
+
+  useEffect(() => {
+    if (!isOpen) {
+      setFormData({
+        name: "",
+        description: "",
+        importance: "",
+        date:{}
+      });
+      setTimeout(() => setStatus("idle"), 2000);
+      
+    }
+  }, [isOpen,status]);
 
   return (
     //Este dialog se usa solo en AGREGAR de la AGENDA"
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="text-black dark:text-white" variant="outline" onClick={() => setIsOpen(true)}>
+        <Button className="bg-black/75 text-white" variant="outline" onClick={() => setIsOpen(true)}>
           {title}
         </Button>
       </DialogTrigger>
@@ -114,6 +167,8 @@ export function DialogTracking({ initialOpen = false,  title, description, field
                               <Checkbox
                                 key={color}
                                 data-name={color}
+                                onClick={handleChecked}
+                                checked={colorSelected === color}
                                 className={`flex items-center rounded-lg justify-center w-8 h-8  ${
                                   colorSelected === color ? colorMapping[color] : color
                                 }` }
@@ -144,7 +199,7 @@ export function DialogTracking({ initialOpen = false,  title, description, field
 
         {/* Indicador de estado */}
         {status === "error" && (
-          <p className="text-red-500 mt-2">Hubo un error agregando el seguimiento por favor intentar nuevamente</p>
+          <p className="text-red-500 mt-2">There was an error saving your profile. Please try again.</p>
         )}
       </DialogContent>
     </Dialog>

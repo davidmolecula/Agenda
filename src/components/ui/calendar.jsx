@@ -17,7 +17,7 @@ function Calendar({
   return (
     (<DayPicker
       showOutsideDays={showOutsideDays}
-      className={cn("p-3 bg-linear-to-bl! from-indigo-500! to-indigo-700!", className)}
+      className={cn("p-3 ", className)}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4 ",
@@ -35,17 +35,17 @@ function Calendar({
         table: "w-full border-collapse space-y-1",
         head_row: "flex",
         head_cell:
-          "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
+          "text-black dark:text-white rounded-md w-9 font-normal text-[0.8rem]",
         row: "flex w-full mt-2",
         cell: "h-9 w-9 text-center rounded-md text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
         day: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-9 w-9 p-0 rounded-r border border-black shadow-2xl font-normal aria-selected:opacity- hover:bg-pink-400"
+          "h-9 w-9 p-0 rounded-r border border-sky-600 shadow-xl dark:border-violet-500 font-normal dark:bg-black dark:text-white dark:hover:!bg-violet-600"
         ),
         day_range_end: "day-range-end",
         day_selected:
-          " text-white dark:text-black  hover:text-primary-foreground hover:bg-pink-400 bg-pink-500 focus:text-white!",
-        day_today: "dark:bg-white bg-black text-white dark:text-black focus:text-white",
+          " text-white dark:text-black  hover:text-primary-foreground hover:bg-pink-400 dark:bg-pink-500 focus:text-white!",
+        day_today: "dark:bg-rose-500 bg-black text-white dark:text-black focus:text-white",
         day_outside:
           "day-outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground",
         day_disabled: "text-muted-foreground opacity-50",

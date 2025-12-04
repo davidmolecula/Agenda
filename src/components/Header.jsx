@@ -40,9 +40,6 @@ const Header = () => {
                 {user?<LinksHeader text='Agenda' link='/calendario' color='gray-100'/> :null}
             </li>
             <li>
-                {user?<LinksHeader text='Seguimiento' link='/seguimiento' color='gray-100'/> :null}
-            </li>
-            <li>
             {user?<LinksHeader text='Tareas' link='/todo' color='gray-100'/>:null} 
             </li>
 
@@ -52,7 +49,6 @@ const Header = () => {
         </nav>
 
         <div className="flex w-full justify-end md:items-center gap-4">
-            
             <div className="flex gap-4">
             <ButtonTheme/>
             {user? null:<LinksHeader text='Iniciar sesión' link='/' color='gray-100'/>}

@@ -45,12 +45,12 @@ const Login = () => {
       <div>
         <label htmlhtmlfor="email" className="sr-only">Email</label>
 
-        <div className="relative">
+        <div className="relative border border-black">
           <input 
           onChange={handleInput}
             type="email"
             name="email"
-            className="w-full text-black rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-xs dark: text-white"
+            className="w-full text-black rounded-lg border border-gray-200 dark:border-gray-600 p-4 pe-12 text-sm shadow-xs dark: text-white"
             placeholder="Tu email"
           />
 
@@ -81,7 +81,7 @@ const Login = () => {
           onChange={handleInput}
             type={showPassword ? "text" : "password"}
             name="password"
-            className="w-full text-black rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-xs dark:text-white"
+            className="w-full text-black rounded-lg border border-gray-200 dark:border-gray-600 p-4 pe-12 text-sm shadow-xs dark:text-white"
             placeholder="Tu contraseña"
           />
 

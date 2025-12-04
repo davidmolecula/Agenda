@@ -23,26 +23,26 @@ const chartConfig = {
   dato: {
     label: "dato",
   },
-  dato2: {
-    label: "dato2",
+  total: {
+    label: "Total",
     color: "var(--chart-2)",
   },
-  dato3: {
-    label: "dato3",
+  maximo: {
+    label: "Días",
     color: "var(--chart-1)",
   },
 }
 
 export function ChartBarInteractive({chartData, title, description}) {
-  const [activeChart, setActiveChart] =React.useState("dato2")
+  const [activeChart, setActiveChart] =React.useState("total")
   const total = React.useMemo(
     () => {
       if (!chartData || chartData.length === 0) {
-    return { dato2: 0, dato3: 0 }; // valor por defecto mientras carga
+    return { total: 0, maximo: 0 }; // valor por defecto mientras carga
   }
       return{
-      dato2: chartData.reduce((acc, curr) => acc + curr.dato2, 0),
-      dato3: chartData.reduce((acc, curr) => acc + curr.dato3, 0),
+      total: chartData.reduce((acc, curr) => acc + curr.total, 0),
+      maximo: chartData.reduce((acc, curr) => acc + curr.maximo, 0),
     }
     },
     [chartData]
@@ -57,7 +57,7 @@ export function ChartBarInteractive({chartData, title, description}) {
           </CardDescription>
         </div>
         <div className="flex">
-          {["dato2", "dato3"].map((key) => {
+          {["total", "maximo"].map((key) => {
             const chart = key;
             return (
               <button
@@ -99,7 +99,7 @@ export function ChartBarInteractive({chartData, title, description}) {
               minTickGap={32}
               tickFormatter={(value) => {
                 const date = new Date(value)
-                return date.toLocaleDateString("en-US", {
+                return date.toLocaleDateString("es", {
                   month: "short",
                   day: "numeric",
                 })

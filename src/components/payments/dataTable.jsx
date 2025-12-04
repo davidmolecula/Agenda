@@ -40,8 +40,8 @@ function DataTable({ data, date, columns }) {
   });
 
   return (
-    <div className="w-full">
-      <div className="flex items-center py-4  ">
+    <div className="w-3xl">
+      <div className="flex items-center">
         <Input
           placeholder="Filtrar por nombre"
           value={table.getColumn("name")?.getFilterValue() ?? ""}
@@ -52,7 +52,7 @@ function DataTable({ data, date, columns }) {
           className="max-w-sm"
         />
       </div>
-      <table className="flex flex-col border border-violet-500 rounded-xl">
+      <table className="flex flex-col border dark:border-violet-500 rounded-xl  border-sky-600 shadow-xl ">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -78,7 +78,7 @@ function DataTable({ data, date, columns }) {
             </tr>
           ))}
         </thead>
-        <tbody className="flex flex-col border border-violet-500 border-b-transparent border-l-transparent border-r-transparent">
+        <tbody className="flex flex-col border dark:border-violet-500 dark:border-b-transparent dark:border-l-transparent border-r-transparent border-sky-700 p-2 border-b-transparent border-l-transparent">
           {comparedData.length === 0 ? (
             <tr >
               <td colSpan={columns.length}>
@@ -89,7 +89,7 @@ function DataTable({ data, date, columns }) {
             table.getRowModel().rows.map((row) => (
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <td className="w-48" key={cell.id}>
+                  <td  key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

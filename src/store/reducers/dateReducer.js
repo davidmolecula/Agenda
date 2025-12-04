@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { date_picked, date_agenda, resetSuccess, date_getagenda, date_delete, date_delete_filtered, date_tracking, date_gettracking, color, date_updateTracking, date_mail} from "../actions/dateActions";
+import { date_picked, date_agenda, resetSuccess, date_getagenda, date_delete, date_delete_filtered, date_tracking, date_gettracking, color, date_updateTask, date_mail, date_getTask, date_task} from "../actions/dateActions";
 const initialState = {
     date: "",
     agenda: [{ name: "", description: "", importance: "" }], // Estado inicial como arreglo de objetos
@@ -8,6 +8,9 @@ const initialState = {
     tracking:[{
         bg: '',
         checked:'x'
+    }],
+    task:[{
+        
     }],
     data:[{
     meassure:3,
@@ -84,7 +87,6 @@ const dateReducer = createReducer(initialState, (builder) =>
             return {
                 ...state,
                 success: action.payload.success,
-                // También asegúrate de que el payload de agenda sea un arreglo
                 tracking: Array.isArray(action.payload.tracking) ? action.payload.tracking : [action.payload.tracking]
             }
         })
@@ -94,18 +96,35 @@ const dateReducer = createReducer(initialState, (builder) =>
                 color: action.payload.color
             }
         })
-        .addCase(date_updateTracking.fulfilled, (state, action) => {
+        .addCase(date_updateTask.fulfilled, (state, action) => {
             return {
                 ...state,
                 success: action.payload.success,
-                tracking: Array.isArray(action.payload.tracking) ? action.payload.tracking : [action.payload.tracking]
+                task: Array.isArray(action.payload.task) ? action.payload.task : [action.payload.task]
             }
         })
         .addCase(date_mail.fulfilled, (state, action) => {
             return {
                 ...state,
                 success: action.payload.success,
-                fef: action.payload.ref
+                ref: action.payload.ref
+            }
+        })
+        .addCase(date_task.fulfilled, (state, action) => {
+            return {
+                ...state,
+                success: action.payload.success,
+                // Garantiza que el payload de agenda sea un arreglo
+                task: Array.isArray(action.payload.task) ? action.payload.task : [action.payload.task],
+                lastAction: "date_task",
+            }
+        })
+        .addCase(date_getTask.fulfilled, (state, action) => {
+            return {
+                ...state,
+                success: action.payload.success,
+                // También asegúrate de que el payload de agenda sea un arreglo
+                task: Array.isArray(action.payload.task) ? action.payload.task : [action.payload.task]
             }
         })
 )
