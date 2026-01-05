@@ -12,15 +12,16 @@ export const date_picked=createAction('date_picked',(obj)=>{
 
 export const date_agenda=createAsyncThunk('date_agenda',async(obj)=>{
     try{
+        console.log(obj)
         const {data}= await axios.post(`${apiUrl}/auth/agenda`, obj.data)
             localStorage.setItem('agenda', JSON.stringify(data.response.agenda))
     return {
-        success:data.success,
+        successAgenda:data.success,
         agenda:data.response.agenda
     }
     }catch(error){
         return {
-            success:data.success
+            successAgenda:data.success
         }
     }
 })
@@ -56,11 +57,17 @@ export const date_delete=createAsyncThunk('date_delete', async(obj)=>{
     }
 })
 
-export const date_delete_filtered=createAction('date_delete_filtered',(obj)=>{
-    
-    const filtrado=obj;
-    return {
-        payload:filtrado
+export const date_update=createAsyncThunk('date_update', async(obj)=>{
+    try{   
+        console.log('action date_update', obj)
+        const {data}=await axios.post(`${apiUrl}/agenda/update`,obj)
+        return{
+            success:data.success
+        }
+    }catch(error){
+        return {
+            success:false,
+        }
     }
 })
 
@@ -98,9 +105,7 @@ export const date_gettracking = createAsyncThunk('date_gettracking', async (obj)
 
 export const date_task = createAsyncThunk('date_task', async (dataTask) => {
     try {
-
         const {data}=await axios.post(`${apiUrl}/auth/task`, dataTask.data)
-
         return {
             success: data.success,
             task: data.response.task,

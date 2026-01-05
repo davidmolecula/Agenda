@@ -1,9 +1,10 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { date_picked, date_agenda, resetSuccess, date_getagenda, date_delete, date_delete_filtered, date_tracking, date_gettracking, color, date_updateTask, date_mail, date_getTask, date_task} from "../actions/dateActions";
+import { date_picked, date_agenda, resetSuccess, date_getagenda, date_update, date_delete, date_tracking, date_gettracking, color, date_updateTask, date_mail, date_getTask, date_task} from "../actions/dateActions";
 const initialState = {
     date: "",
     agenda: [{ name: "", description: "", importance: "" }], // Estado inicial como arreglo de objetos
-    success: false, // Estado para éxito general
+    success: null,
+    successAgenda:null, // Estado para éxito general
     lastAction: null, // Para identificar la acción exitosa
     tracking:[{
         bg: '',
@@ -33,7 +34,7 @@ const dateReducer = createReducer(initialState, (builder) =>
         .addCase(date_agenda.fulfilled, (state, action) => {
             return {
                 ...state,
-                success: action.payload.success,
+                successAgenda: action.payload.successAgenda,
                 // Garantiza que el payload de agenda sea un arreglo
                 agenda: Array.isArray(action.payload.agenda) ? action.payload.agenda : [action.payload.agenda],
                 lastAction: "date_agenda"
@@ -42,7 +43,7 @@ const dateReducer = createReducer(initialState, (builder) =>
         .addCase(date_agenda.rejected, (state) => {
             return {
                 ...state,
-                success: false,
+                successAgenda: false,
                 lastAction: "date_agenda",
             };
         })
@@ -68,10 +69,10 @@ const dateReducer = createReducer(initialState, (builder) =>
                 success:action.payload.success
             }
         })
-        .addCase(date_delete_filtered, (state, action) => {
+                .addCase(date_update.fulfilled,(state,action)=>{
             return {
                 ...state,
-                filtrado: action.payload.filtrado
+                success:action.payload.success
             }
         })
         .addCase(date_tracking.fulfilled, (state, action) => {

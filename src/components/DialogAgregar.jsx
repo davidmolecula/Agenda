@@ -54,8 +54,10 @@ export function DialogAgregar({ initialOpen = false,  title, description, fields
     'bg-green-400': 'bg-green-600',  // Evento positivo
   };
   const dispatch=useDispatch()
-  const { success, lastAction } = useSelector((store) => store.dateReducer);
-  const agendaSuccess = success && lastAction === "date_agenda";
+  const { successAgenda, lastAction } = useSelector((store) => store.dateReducer);
+  const agendaSuccess = successAgenda && lastAction === "date_agenda";
+  console.log('successAgenda: ', successAgenda)
+  console.log('agendaSuccess: ', agendaSuccess)
 
   const handleInput=(event)=>{
     const { name, value } = event.target; 
@@ -78,12 +80,13 @@ export function DialogAgregar({ initialOpen = false,  title, description, fields
         setStatus("idle");
         dispatch(resetSuccess()); // Limpia el estado global
       }, 500);
-    } else if (lastAction === "date_agenda" && !success) {
+    } else if (lastAction === "date_agenda" && !successAgenda) {
+      console.log('esto si')
       setStatus("error");
       setTimeout(() => setStatus("idle"), 500);
       dispatch(resetSuccess());
     }
-  }, [lastAction, success, dispatch]);
+  }, [lastAction, successAgenda, dispatch]);
 
   const handleSaveAgenda = (event) => {
     event.preventDefault();
@@ -98,7 +101,7 @@ export function DialogAgregar({ initialOpen = false,  title, description, fields
             subject: "Nueva tarea creada",
             html: "<h2>Hola!</h2><p>Se creó una nueva tarea en tu agenda.</p>",
         }
-        dispatch(date_mail(mail))
+        //dispatch(date_mail(mail))
     } else {
       setStatus("saving");
       setTimeout(() => setStatus("error"), 1000);

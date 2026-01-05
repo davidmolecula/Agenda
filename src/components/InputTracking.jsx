@@ -11,9 +11,8 @@ export function InputTracking({ fields, date, onSave, task }) {
   const dispatch = useDispatch();
   const [status, setStatus] = useState("idle"); // Posibles valores: "idle", "saving", "success", "error"
   const [formData, setFormData] = useState({});
-  const [isOpen, setIsOpen] = useState(false); 
-  const { success, lastAction } = useSelector((store) => store.dateReducer);
-  const trackingSuccess = success && lastAction === "date_tracking";
+
+
 console.log(task)
 console.log(formData)
 
@@ -38,21 +37,7 @@ console.log(formData)
     }
   }, [user, status]);
 
-  useEffect(() => {
-    if (trackingSuccess) {
-      setStatus("saving");
-      setTimeout(() => setStatus("success"), 500);
-      setTimeout(() => {
-        setIsOpen(false);
-        setStatus("idle");
-        dispatch(resetSuccess()); // Limpia el estado global
-      }, 500);
-    } else if (lastAction === "date_tracking" && !success) {
-      setStatus("error");
-      setTimeout(() => setStatus("idle"), 500);
-      dispatch(resetSuccess());
-    }
-  }, [lastAction, success, dispatch]);
+
 
   const handleSaveTracking = (event) => {
     event.preventDefault();
@@ -60,6 +45,7 @@ console.log(formData)
     if (formData.task==='Estudio'||formData.task==='Entrenamiento'||formData.task==='Hobbie') {
       setStatus("saving");
       dispatch(date_tracking({ data: formData }));
+      setTimeout(() => setStatus("idle"), 500);
       if (onSave) onSave();
     } else {
       setStatus("saving");
